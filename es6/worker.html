@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>worder-html5</title>
+</head>
+
+<body>
+    <div id="nodes" onclick="test()">测试worker消息</div>
+     worker也有标准的 addEventListner,  removeEventListner() 方法。
+    
+    另外有一个  terminate() 强制worker线程结束运行。
+    <div id="stop">
+    	    //异常处理
+		    w.onerror = function( e ){
+		    	console.log("error at" + e.filename + ":"+ e.message)
+		    }
+
+		    // worker也有标准的 addEventListner,  removeEventListner() 方法。 代替 onmessage, onerror
+
+		    // 另外有一个  terminate() 强制worker线程结束运行。
+
+		    // 二。worker作用域（workerglobalScope）
+		    // URL 里的代码，创建了新的运行环境workerglobalScope,大于核心的javascript全局对象，但又小于客户端window对象。 和worker一样，也有2个方法：
+		    // postMessage(),onmessage()但恰好相反。  close()将自己关闭。
+		    方法：importScript() 是一个同步方法
+    </div>
+    <img src="./images/d.jpg" alt="" onclick="smear(this)">
+    <img src="" alt="" id="aa"  style="display: none;">
+    <!-- <canvas id="myCanvas" width="500" height="300" style="border:1px solid #d3d3d3;background:#ffffff;">
+    Your browser does not support the HTML5 canvas tag.
+    </canvas> -->
+    <script type="text/javascript">
+
+    function smear( img ){
+
+        var worker = new Worker('./js/smearWorker.js')
+
+    	worker.postMessage( "duid ne hello zhangcaiefng" );
+
+    	worker.onmessage = function( e ){
+    		var smeared_pixels = e.data;
+    		var aa = document.getElementById('nodes');
+            aa.innerText = smeared_pixels;
+    		worker.terminate();
+    	}
+
+    }
+    	
+    </script>
+
+</body>
+
+</html>

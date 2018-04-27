@@ -1,0 +1,59 @@
+ROUTER:
+https://router.vuejs.org/zh-cn/essentials/dynamic-matching.html
+
+
+我们需要做的是，将组件(components)映射到路由(routes)，然后告诉 vue-router 在哪里渲染它们。
+
+
+$route.params 这个可以拿到路由 参数；
+
+// 对路由变化作出响应...
+const User = {
+  template: '...',
+  watch: {
+    '$route' (to, from) {
+      // 对路由变化作出响应...
+    }
+  }
+}
+// 对路由变化作出响应22...
+const User = {
+  template: '...',
+  beforeRouteUpdate (to, from, next) {
+    // react to route changes...
+    // don't forget to call next()
+  }
+}
+
+动态路由 和 嵌套（孩子）路由  js:
+export default new Router({
+  routes: [
+    // 动态路径参数 以冒号开头  即以user开头的 都会映射到这个组件。
+    // 动态路由匹配
+    { path: '/', name: 'user', component: User,
+      children: [     //嵌套路由  重要  todos。。。
+        {
+          // 当 /user/:id/profile 匹配成功，
+          // UserProfile 会被渲染在 User 的 <router-view> 中
+          path: 'profile',
+          component: UserProfile
+        },
+        {
+          // 当 /user/:id/posts 匹配成功
+          // UserPosts 会被渲染在 User 的 <router-view> 中
+          path: 'posts',
+          component: UserPosts
+        }
+      ]   
+    }
+    // {
+    //   path: '/',
+    //   name: 'HelloWorld',
+    //   component: HelloWorld
+    // }
+  ]
+})
+模板：
+<router-view/>
+<!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+    <router-link to="/foo">Go to Foo</router-link>

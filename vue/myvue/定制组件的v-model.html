@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>教程－组件－定制组件的 v-model</title>
+</head>
+
+<body>
+    <div id="app"> 
+        <div>{{ foo }}</div>
+        <my-checkbox v-model="foo" value="some value"></my-checkbox>
+        <!-- 上面的代码等价于下面
+        <my-checkbox
+          :checked="foo"
+          @change="val => { foo = val }"
+          value="some value">
+        </my-checkbox> -->
+        
+    </div>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+    //默认情况下，一个组件的 v-model 会使用 value 属性和 input 事件，但是诸如单选框、复选框之类的输入类型可能把 value 属性用作了别的目的。model 选项可以回避这样的冲突：
+
+    Vue.component('my-checkbox',{
+        template: '<select name="" id=""><option value="1"> true </option><option value="0"> false </option></select>',
+        model: {
+            prop: 'checked',     
+            event: 'change'
+        },
+        props: {      //Props 允许外部环境传递数据给组件,接收父组件数据。Events 允许从外部环境在组件内触发副作用,Slots 允许外部环境将额外的内容组合在组件中。
+            checked: Boolean,   //限制父组件给过来的值要符合这个类型
+            value: String
+        }
+    })
+
+    var a = new Vue({
+        el: '#app',
+        data: {
+            foo: false
+        },
+        methods: {
+            changeFun: function(){
+                console.log(1);
+                this.foo += 1;
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,106 @@
+.t{
+	padding: .3rem .3rem .18rem;
+	font-size: .28rem;
+	line-height: .34rem;
+}
+.bank .t{
+	color:#eb6100;
+}
+.ipt-box{
+	background: #fff;
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
+	line-height: .6rem;
+	padding: .1rem .2rem;
+	color:#313131;
+	font-size: .32rem;
+}
+.ipt-box .dl{
+	display: -webkit-box;
+}
+.ipt-box .dl .dd{
+	-webkit-box-flex:1;
+	margin-left: .26rem;
+}
+.agree{
+	padding: .3rem;
+	margin-top: .5rem;
+	font-size: .28rem;
+}
+.btn-bank{
+	height: .88rem;
+    font-size: .35rem;
+    border-radius: 5px;
+    color:#fff;
+    text-align: center;
+    background: #0087e3;
+   line-height: .88rem;
+   margin-top: .16rem;
+}
+.error-top{
+	background: rgba(248,87,87,.9);
+	text-align: center;
+	position: fixed;
+	top:0;
+	width: 100%;
+	color:#fff;
+	font-size: .28rem;
+	padding: .08rem .3rem;
+	line-height: .6rem;
+	z-index: 11;
+}
+.error-top .icon-tip{
+	margin: 0;
+}
+.sup-card{padding: 0.3rem 0;}
+.sup-card h2{font-size: 0.35rem;border-bottom: 1px solid #d8d8d8;padding-bottom: 0.3rem;}
+.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;height: 7.8rem;}
+.sup-list{padding: 0 0.3rem;}
+.sup-list li{
+	font-size: 0.32rem;color:#313131;
+	border-bottom: 1px solid #d8d8d8;
+	line-height: 0.8rem;padding-left: 1.65rem;
+	padding-top:.02rem;
+	padding-bottom: .02rem; 
+}
+
+.bank-card{padding: 0.3rem 0.3rem 0.3rem 0;}
+.bank-card .btn-wrap{background-color: #efefef;}
+.bank-card ul{padding-bottom: 1.9rem;}
+.bank-card ul li{margin-bottom: 0.2rem;}
+.bank-card li .select-card{margin-left: 0.84rem;display: -webkit-box;border-radius: 5px;padding:0.36rem 0.25rem 0.32rem 0.3rem;color:#fff;}
+.bank-card li .chose{padding: 0.2rem;position: relative;float: left;}
+.bank-card li .chose:after{content: "";width: 0.43rem;height: 0.43rem;display: block;position: absolute;top:0.64rem;
+	background: url("../images/icon-choose.png") no-repeat right 0;background-size: 100% 100%;
+}
+.bank-card li.active .chose:after{background: url("../images/icon-choosed.png") no-repeat right 0;background-size: 100% 100%;}
+.bank-card li .bank-info{-webkit-box-flex:1;margin-left: 0.26rem;}
+.bank-card .bank-logo img{display: block;width: 1rem;height: 1rem;border-radius: 43%;}
+.color-bcm{background: #002f68;}
+.color-abc{background: #009173;}
+.color-ccb{background: #003a8f;}
+.color-pab{background: #e66700;}
+.color-spdb{background: #2e488a;}
+.color-icbc{background: #e33034;}
+.color-ceb{background: #6a1685;}
+.color-hxb{background: #da2634;}
+.color-gdb{background: #c01c29;}
+.color-cib{background: #323173;}
+.color-shb{background: #faaf3e;}
+.color-citic{background: #df3442;}
+.color-cncb{background: #df3442;}
+.color-cmbc{background: #1ba2d3;}
+.color-psbc{background: #067f3d;}
+.color-boc{background: #c2133a;}
+.color-jsb{background: #005ba4;}
+.color-cmb{background: #da2533;}
+.color-bob{background: #cd131b;}
+.color-default{background: #d99d59;}
+
+.bank-card li h2{font-size: 0.33rem;margin-top: 0.03rem;}
+.bank-card li p.card-type{color:rgba(255,255,255,0.3);font-size: 0.28rem;margin-top: 0.12rem;float: left;}
+.bank-card li .card-num{float: right;font-size: 0.4rem;margin-top: .08rem;}
+.bank-card .color-yqb{background: url("../images/bank/icon-yqb.png") no-repeat right bottom #1e9ee6;background-size: 1.79rem 1.4rem;}
+.bank-card .color-yqb .card-num{float: none;margin-top: .2rem;}
+.bank-card .bank-info .clear{margin-top: 0.06rem;}
+.bank-card .fixed{border-top: 1px solid #d8d8d8;}

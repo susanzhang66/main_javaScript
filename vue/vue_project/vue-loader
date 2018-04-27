@@ -1,0 +1,22 @@
+vue-loader：固定格式，引入方式等。由webpack打包
+
+原理：
+vue-loader会解析这个文件中的每个语言块，然后传输到其它的loaders，最终输出到module.exports是vue组件的配置对象的CommonJS模块。 
+
+将 .vue 文件变成 .bundle.js，然后放入浏览器运行。
+
+//----------------------------
+webpack带的功能vue-loader：  以下是详细解释地址：
+https://vue-loader.vuejs.org/zh-cn/
+
+
+vue-loader 是一个 Webpack 的 loader，可以将用下面这个格式编写的 Vue 组件转换为 JavaScript 模块：
+它的特性：
+默认支持 ES2015；
+允许对 Vue 组件的组成部分使用其它 Webpack loader，比如对 <style> 使用 SASS 和对 <template> 使用 Jade；
+.vue 文件中允许自定义节点，然后使用自定义的 loader 进行处理；
+把 <style> 和 <template> 中的静态资源当作模块来对待，并使用 Webpack loader 进行处理；
+对每个组件模拟出 CSS 作用域；
+支持开发期组件的热重载。
+
+－－－－－－－－－vue-loader-------

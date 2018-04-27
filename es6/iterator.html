@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>Iterator 和 for...of 循环</title>
+</head>
+
+<body>
+    <div id="nodes">kfd</div>
+    <div id="stop">stopdafa</div>
+    <script type="text/javascript">
+    // 四种集合：
+    // 主要是数组（Array）和对象（Object），ES6 又添加了Map和Set。
+    function makeIterator(array) {
+      var nextIndex = 0;
+      return {
+        next: function() {
+          return nextIndex < array.length ?
+            {value: array[nextIndex++]} :
+            {done: true};
+        }
+      };
+    }
+
+    //二。 原生具备 Iterator 接口的数据结构如下。for...of循环会自动遍历它们
+
+    //   Array
+    //   Map
+    //   Set
+    //   String
+    //   TypedArray
+    //   函数的 arguments 对象
+
+    // 具体如下代码原理
+
+    const obj = {
+      [Symbol.iterator] : function () {   //Symbol作为属性必须用［］
+        return {
+          next: function () {
+            return {
+              value: 1,
+              done: true
+            };
+          }
+        };
+      }
+    };
+
+
+    三。Symbol.iterator属性，Iterator持有的。函数属性。
+
+
+    </script>
+</body>
+
+</html>

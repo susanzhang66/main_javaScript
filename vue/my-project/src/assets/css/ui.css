@@ -1,0 +1,163 @@
+.leayer{
+  position: fixed;
+  top:0;bottom:0;
+  left:0;right:0;
+  background: rgba(0,0,0,0.75);
+  z-index: 99;
+}
+.leayer .close{
+  width: 1rem;
+  height: 1rem;
+  margin: 0 auto;
+  display: block;
+  position: absolute;
+  top:0;
+  right:0;
+  text-align: center;
+  padding-top: 0.4rem;
+}
+.dialog {
+    position: fixed;
+    left: 0.3rem;
+    right: 0.3rem;
+    font-size: 0.26rem;
+    background: #fff;
+    border-radius: 8px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+}
+.dialog .title{padding: 0.3rem;text-align:center;margin: 0 0.35rem;border-bottom: 1px solid #d8d8d8;}
+.dialog h2{font-size: 0.4rem;color:#313131;text-align: center;}
+.close{position: absolute;width: 0.88rem;text-align: right;height: 0.88rem;right:0;top:0;padding: 0.36rem 0.36rem 0 0;text-align: right;}
+.close:after{content:"";display: inline-block;
+width: 0.22rem;height: 0.22rem;
+background: url("../images/icon-close.png") no-repeat;
+background-size: 100% auto;}
+
+.btn-up{
+  display: inline-block;
+  min-width: 3rem;
+  vertical-align: top;
+}
+
+.ui-select{
+  color:#313131;
+}
+.ui-select h2{
+  font-size: .35rem;
+  text-align: center;
+  padding: .3rem;
+  line-height: .5rem;
+  border-bottom: 1px solid #d8d8d8;
+}
+.ui-select .option{
+  height: 6.6rem;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch;
+}
+.option li{
+  padding: .3rem .7rem;
+  font-size: .32rem;
+  border-top: 1px solid #d8d8d8;
+}
+.option li:first-child{
+  border-top: 0;
+}
+
+.keyboard{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    background: #f6f6f6;
+    display:-webkit-box;
+    z-index: 20;
+}
+.keyboard .key-num{
+    -webkit-box-flex:1;
+}
+.key-opt{
+    width: 1.92rem;
+    border-top: 1px solid #ccc;
+}
+.keyboard .key-num li{
+    float: left;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    width: 33.3333%;
+    height: 1rem;
+    text-align: center;
+    line-height: 1rem;
+    color:#333;
+    font-size: .38rem;
+}
+.opt-del,.opt-ture{
+    height: 2rem;
+    line-height: 2rem;
+}
+.opt-ture{
+    background: #eb6100;
+    color:#fff;
+    font-size: .4rem;
+    text-align: center;
+}
+.icon-key{
+    background: url(../images/icon-key.png) no-repeat center center;
+    -webkit-background-size: .65rem .47rem;
+    background-size: .65rem .47rem;
+}
+.opt-del{
+    background: url(../images/opt-del.png) no-repeat center center;
+    -webkit-background-size: .52rem .37rem;
+    background-size: .52rem .37rem;
+}
+.dialog-flex{
+    display:-webkit-box;
+    color:#858585;
+}
+.dialog-flex .b-txt{
+    -webkit-box-flex:1;
+    width:100%;
+    border-top: 1px solid #c8c8c8;
+    font-size: .38rem;
+    text-align: center;
+    height: 1.06rem;
+    line-height: 1.06rem;
+    border-left: 1px solid #c8c8c8;
+}
+.dialog-flex .b-txt:first-child{
+    border-left: 0;
+}
+.pop-change{
+    padding: .56rem .45rem;
+    line-height: .45rem;
+    font-size: .3rem;
+    color:#333;
+}
+.pop-change h2{
+    font-size: .36rem;
+    margin-bottom: .4rem;
+}
+.pop-change h3{
+    font-size: .35rem;
+    text-align: center;
+}
+.btn-ios{
+  padding: .25rem .2rem;
+}
+.btn-ios ul{
+  background: #fff;
+  border-radius: 6px;
+  margin-top: 0.3rem;
+}
+.btn-ios li{
+  line-height: 1.04rem;
+  height: 1.04rem;
+  font-size: 0.35rem;
+  text-align: center;
+  color:#256ee6;
+  border-top: 1px solid #c6c6c6;
+}
+.btn-ios li:first-child{
+  border-top: 0;
+}

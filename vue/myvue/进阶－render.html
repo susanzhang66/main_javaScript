@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> Render函数。</title>
+</head>
+ <style type="text/css">
+
+
+ </style>
+<body>
+
+<!-- demo root element -->
+<div id="demo">
+<anchored-heading :level="1">Hello world!</anchored-heading>
+</div>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+var getChildrenTextContent = function (children) {
+  return children.map(function (node) {
+    return node.children
+      ? getChildrenTextContent(node.children)
+      : node.text
+  }).join('')
+}
+Vue.component('anchored-heading', {
+  render: function (createElement) {
+    // create kebabCase id
+    var headingId = getChildrenTextContent(this.$slots.default)
+      .toLowerCase()
+      .replace(/\W+/g, '-')
+      .replace(/(^\-|\-$)/g, '')
+    return createElement(
+      'h' + this.level,
+      [
+        '写一些文字',
+        createElement('a', {
+          attrs: {
+            name: headingId,
+            href: '#' + headingId
+          }
+        }, this.$slots.default)
+      ]
+    )
+  },
+  props: {
+    level: {
+      type: Number,
+      required: true
+    }
+  }
+})
+
+var demo = new Vue({
+  el: '#demo'
+})
+    </script>
+</body>
+
+</html>
+

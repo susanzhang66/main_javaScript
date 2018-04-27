@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> 事件处理 </title>
+</head>
+ <style type="text/css">
+
+
+ </style>
+<body>
+
+1.监听事件
+  1）方法事件处理器
+
+  <div id="example-2">
+  <!-- `greet` 是在下面定义的方法名 -->
+  <button v-on:click="greet">Greet</button>
+  </div>
+
+  2）内联处理器中的方法
+
+  <div id="example-3">
+    <button v-on:click="say('hi')">Say hi</button>
+    <button v-on:click="say('what')">Say what</button>
+  </div>
+  2.1） 访问 原生事件dom，从参数中传入 参数 $event
+  <button v-on:click="warn('Form cannot be submitted yet.', $event)">
+    Submit
+  </button>
+
+  3)事件修饰符。  － 缘由：methods 只有纯粹的数据逻辑，而不是去处理 DOM 事件细节。
+  .stop
+  .prevent
+  .capture
+  .self
+  .once
+  <!-- 阻止单击事件冒泡 -->
+<a v-on:click.stop="doThis"></a>
+<!-- 提交事件不再重载页面 -->
+<form v-on:submit.prevent="onSubmit"></form>
+<!-- 修饰符可以串联 -->
+<a v-on:click.stop.prevent="doThat"></a>
+<!-- 只有修饰符 -->
+<form v-on:submit.prevent></form>
+<!-- 添加事件侦听器时使用事件捕获模式 -->
+<div v-on:click.capture="doThis">...</div>
+<!-- 只当事件在该元素本身 (比如不是子元素) 触发时触发回调 -->
+<div v-on:click.self="doThat">...</div>
+
+<!-- 点击事件将只会触发一次 -->
+<!-- 不像其它只能对原生的 DOM 事件起作用的修饰符，.once 修饰符还能被用到自定义的组件事件上。 -->
+<a v-on:click.once="doThis"></a>
+
+    4）健值修饰符
+    全部的按键别名：
+.enter
+.tab
+.delete (捕获“删除”和“退格”键)
+.esc
+.space
+.up
+.down
+.left
+.right
+
+可以通过全局 config.keyCodes 对象自定义键值修饰符别名： 如：
+// 可以使用 v-on:keyup.f1
+Vue.config.keyCodes.f1 = 112
+
+5）系统修饰符
+.ctrl
+.alt
+.shift
+.meta
+
+注意：在 Mac 系统键盘上，meta 对应命令键 (⌘)。在 Windows 系统键盘 meta 对应 windows 徽标键 (⊞)。在 Sun 操作系统键盘上，meta 对应实心宝石键 (◆)。在其他特定键盘上，尤其在 MIT 和 Lisp 键盘及其后续，比如 Knight 键盘，space-cadet 键盘，meta 被标记为“META”。在 Symbolics 键盘上，meta 被标记为“META”或者“Meta”。
+<!-- Alt + C -->
+<input @keyup.alt.67="clear">
+<!-- Ctrl + Click -->
+<div @click.ctrl="doSomething">Do something</div>
+
+
+6） .extra修饰符
+.exact 修饰符应与其他系统修饰符组合使用，以指示处理程序只在精确匹配该按键组合时触发。
+
+  <!-- 即使 Alt 或 Shift 被一同按下时也会触发 -->
+<button @click.ctrl="onClick">A</button>
+ 
+  <!-- 只有在 Ctrl 被按下的时候触发 -->
+<button @click.ctrl.exact="onCtrlClick">A</button>
+
+
+
+<!-- item template -->
+  
+
+    <div id="app">
+              <div id="app-7">
+              <ol>
+                  <!--
+              现在我们为每个 todo-item 提供待办项对象
+              待办项对象是变量，即其内容可以是动态的。
+              我们也需要为每个组件提供一个“key”，晚些时候我们会做个解释。
+
+              当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级。
+            -->
+                  <todo-item v-for="item in groceryList" v-if="item.id >0" v-bind:todo="item" v-bind:key="item.id">
+                  </todo-item>
+              </ol>
+              </div>
+
+              <input v-on:keyup.enter="submit" />duodaf
+
+              <!-- Alt + C   这个去window上看下怎么回事-->
+              <input @keyup.alt="clear">
+              <!-- Ctrl + Click -->
+              <div @click.ctrl="doSomething">Do something</div>
+    </div>
+
+<!-- item template -->
+
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+   // 定义名为 todo-item 的新组件
+    Vue.component('todo-item', {
+        // todo-item 组件现在接受一个
+        // "prop"，类似于一个自定义属性
+        // 这个属性名为 todo。
+
+        // 然而，任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域。为了把迭代数据传递到组件里，我们要用 props ：
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    })
+// boot up the demo
+    var app7 = new Vue({
+        el: '#app',
+        data: {
+            groceryList: [{
+                id: 0,
+                text: '蔬菜'
+            }, {
+                id: 1,
+                text: '奶酪'
+            }, {
+                id: 2,
+                text: '随便其他什么人吃的东西'
+            }]
+        },
+        methods:{
+            clear: function(argument) {
+              alert(1);
+            },
+            doSomething: function(){
+               alert('something')
+            },
+            submit: function(){
+              alert('submit')
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

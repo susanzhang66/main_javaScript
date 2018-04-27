@@ -1,0 +1,33 @@
+
+<div id="app16">
+    <father-component4></father-component4>
+</div>
+<script type="text/javascript" src="../js/vue.js"></script>
+<script type="text/javascript">
+  Vue.component('child-component4',{
+   template:'<ul>' +
+   '<slot name="child-ul" v-for="item in fruit" v-bind:text="item.name">?</slot>' +
+   '</ul>',
+    data:function(){
+      return {
+          fruit:[
+              {name:'苹果'},
+              {name:'香蕉'},
+              {name:'橙子'}
+          ]
+      }
+    },
+});
+Vue.component('father-component4',{
+   template:'<child-component4>' +
+   '<template scope="props" slot="child-ul">' +
+   '<li class="child-li" >{{props.text}}</li>' +
+   '</template>' +
+   '</child-component4>'
+});
+var app16 = new Vue({
+    el:'#app16'
+});
+
+  
+</script>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>函数的扩展</title>
+</head>
+
+<body>
+    <div id="nodes">kfd</div>
+    <div id="stop">stopdafa</div>
+    <script type="text/javascript">
+    //不能重复声明。
+    function log(x, y = 'World') {
+        // let x = 'hello';  //不能重复声明。
+        console.log(x, y);
+    }
+    log();
+    //表达式是动态求值。
+    let x = 99;
+    function test( p = x + 1 ){  //表达式是动态求值。
+        console.log(p);
+    }
+    test();
+    x=100;
+    test();
+    //与解构赋值默认值结合使用
+    function foo({x,y=1}){
+        console.log(x,y);
+    }
+    foo({x:3,y:4});
+    </script>
+</body>
+
+</html>

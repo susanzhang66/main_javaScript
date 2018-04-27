@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> 实例属性－render</title>
+</head>
+ <style type="text/css">
+body {
+  font-family: Menlo, Consolas, monospace;
+  color: #444;
+}
+.item {
+  cursor: pointer;
+}
+.bold {
+  font-weight: bold;
+}
+ul {
+  padding-left: 1em;
+  line-height: 1.5em;
+  list-style-type: dot;
+}
+
+ </style>
+<body>
+<div id="app">
+  <blog-post>
+  <h1 slot="header">
+    About Me
+  </h1>
+  <p>Here's some page content, which will be included in vm.$slots.default, because it's not inside a named slot.</p>
+  <p slot="footer">
+    Copyright 2016 Evan You
+  </p>
+  <p>If I have some content down here, it will also be included in vm.$slots.default.</p>.
+</blog-post>
+</div>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+
+Vue.component('blog-post', {
+  render: function (createElement) {
+    var header = this.$slots.header
+    // this.$slots.default : 这个是 除了不具名的slot 模版string...
+    var body   = this.$slots.default
+    var footer = this.$slots.footer
+    return createElement('div', [
+      createElement('header', header),
+      createElement('main', body),
+      createElement('footer', footer)
+    ])
+  }
+})
+
+var demo = new Vue({
+  el: '#app'
+})
+    </script>
+</body>
+
+</html>

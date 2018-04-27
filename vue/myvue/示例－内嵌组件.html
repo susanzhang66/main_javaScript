@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> 示例－内嵌组件</title>
+</head>
+ <style type="text/css">
+html, body {
+  font: 13px/18px sans-serif;
+}
+select {
+  min-width: 300px;
+}
+
+ </style>
+<body>
+<div>在本例中，我们整合了第三方 jQuery 插件（select2）,怎么做到的呢？就是把它内嵌在一个常用组件中。
+</div>
+<div id="el"></div>
+
+<!-- using string template here to work around HTML <option> placement restriction -->
+<script type="text/x-template" id="demo-template">
+  <div>
+    <p>Selected: {{ selected }}</p>
+    <select2 :options="options" v-model="selected">
+      <option disabled value="0">Select one</option>
+    </select2>
+  </div>
+</script>
+
+<script type="text/x-template" id="select2-template">
+  <select>
+    <slot></slot>
+  </select>
+</script>
+    <script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+Vue.component('select2', {
+  props: ['options', 'value'],
+  template: '#select2-template',
+  mounted: function () {     
+    var vm = this
+    $(this.$el)
+      // init select2
+      .select2({ data: this.options })
+      .val(this.value)
+      .trigger('change')
+      // emit event on change.
+      .on('change', function () {
+        vm.$emit('input', this.value)
+      })
+  },
+  watch: {
+    value: function (value) {
+      // update value
+      $(this.$el).val(value).trigger('change');
+    },
+    options: function (options) {
+      // update options
+      $(this.$el).select2({ data: options })
+    }
+  },
+  destroyed: function () {
+    $(this.$el).off().select2('destroy')
+  }
+})
+
+var vm = new Vue({
+  el: '#el',
+  template: '#demo-template',
+  data: {
+    selected: 2,
+    options: [
+      { id: 1, text: 'Hello' },
+      { id: 2, text: 'World' }
+    ]
+  }
+});
+    </script>
+</body>
+
+</html>

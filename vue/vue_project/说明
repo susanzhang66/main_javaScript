@@ -1,0 +1,258 @@
+vue_project 说明：
+
+
+注：package.json中的script会安装一定顺序寻找命令对应位置，本地的node_modules/.bin路径就在这个寻找清单中，所以无论是全局还是局部安装的Webpack，你都不需要写前面那指明详细的路径了。
+
+
+webpack
+一个比较官方的学习地址。
+https://doc.webpack-china.org/guides/
+中文网址：
+https://doc.webpack-china.org/concepts/
+本次项目学习网址：
+https://segmentfault.com/a/1190000006178770
+
+__webpack_public_path__ = myRuntimePublicPath
+publicPath 这个字段是 使用 CDN 和资源 hash 的复杂示例：
+output: {
+    path: __dirname + "/build",//打包后的文件存放的地方
+    filename: "bundle.js"//打包后输出文件的文件名
+    publicPath: process.env.NODE_ENV === 'production'  
+      ? config.build.assetsPublicPath
+       : config.dev.assetsPublicPath
+ },
+
+
+ Hot Module Replacement 实时刷新插件
+
+ 优化插件
+
+webpack提供了一些在发布阶段非常有用的优化插件，它们大多来自于webpack社区，可以通过npm安装，通过以下插件可以完成产品发布阶段所需的功能
+
+
+管理资源：
+OccurenceOrderPlugin :为组件分配ID，通过这个插件webpack可以分析和优先考虑使用最多的模块，并为它们分配最小的ID
+UglifyJsPlugin：压缩JS代码；
+ExtractTextPlugin：分离CSS和JS文件
+
+下面通过上面webpace地址中。 《指南》 中的文章。
+
+管理输出：
+1. HtmlWebpackPlugin简化了HTML文件的创建，以便为您的webpack包提供服务。 这对于在文件名中包含每次会随着变异会发生变化的哈希的webpack bundle尤其有用。 您可以让插件为您生成一个HTML文件，使用lodash模板提供您自己的模板，或使用您自己的loader。
+
+2. 清理 /dist 文件夹
+	new CleanWebpackPlugin(['dist']),  // 清理 /dist 文件夹
+
+3.Manifest 
+在使用 webpack 构建的典型应用程序或站点中，有三种主要的代码类型：
+你或你的团队编写的源码。
+你的源码会依赖的任何第三方的 library 或 "vendor" 代码。
+webpack 的 runtime 和 manifest，管理所有模块的交互。
+
+----  那些 import 或 require 语句现在都已经转换为 __webpack_require__ 方法，此方法指向模块标识符(module identifier)。
+通过使用 WebpackManifestPlugin，可以直接将数据提取到一个 json 文件，以供使用。
+我们不会在此展示一个关于如何在你的项目中使用此插件的完整示例，但是你可以仔细深入阅读 manifest 的概念页面，以及通过缓存指南来弄清如何与长期缓存相关联。
+
+4.开发：
+使用 source map
+	devtool: 'inline-source-map'
+选择一个开发工具
+	每次要编译代码时，手动运行 npm run build 就会变得很麻烦。
+
+	webpack 中有几个不同的选项，可以帮助你在代码发生变化后自动编译代码：
+		webpack's Watch Mode   ： 使用观察模式  scripts标签加入： "watch": "webpack --watch",
+		webpack-dev-server	： 
+				webpack-dev-server 为你提供了一个简单的 web 服务器，并且能够实时重新加载(live reloading)。让我们设置以下：
+					+   devServer: {
+					+     contentBase: './dist'
+					+   },
+					"start": "webpack-dev-server --open",  //这个就可以边修改文件，
+					npm  run start，就会看到浏览器自动加载页面。如果现在修改和保存任意源文件，web 服务器就会自动重新加载编译后的代码。试一下！
+		webpack-dev-middleware
+			webpack-dev-middleware 是一个中间件容器(wrapper)，它将通过 webpack 处理后的文件发布到一个服务器(server)。
+			webpack-dev-middleware 配合 express server 的示例
+			+ webpack-dev-middleware@1.12.2
+			+ express@4.16
+
+			 publicPath: '/' 会在服务器脚本用到，以确保文件资源能够在 http://localhost:3000 下正确访问
+
+			 express:
+			 http://www.expressjs.com.cn/
+			 Express 是一个基于 Node.js 平台的极简、灵活的 web 应用开发框架
+
+			 node server.js
+			 解释：使用express是因为：
+			 webpack-dev-middleware 是一个中间件容器(wrapper)，它将通过 webpack 处理后的文件发布到一个服务器(server)。在内部 webpack-dev-server 它使用，然而，它可以作为一个单独的包来提供，可以进行更多的自定义设置来实现更多需求。接下来是一个 webpack-dev-middleware 配合 express server 的示例。
+
+5.模块热替换
+	允许在运行时更新各种模块，而无需进行完全刷新
+	模块热替换(Hot Module Replacement 或 HMR)是 webpack 提供的最有用的功能之一
+	HMR 不适用于生产环境，这意味着它应当只在开发环境使用。
+
+	nodeapi
+
+Tree Shaking	
+	为了学会使用 tree shaking，你必须……
+
+		使用 ES2015 模块语法（即 import 和 export）。
+		引入一个能够删除未引用代码(dead code)的压缩工具(minifier)（例如 UglifyJSPlugin）。
+
+生产环境构建
+npm install --save-dev webpack-merge
+插件：
++     new webpack.DefinePlugin({
++       'process.env': {
++         'NODE_ENV': JSON.stringify('production')
++       }
++     })
+
+
+有三种常用的代码分离方法：
+
+入口起点：使用 entry 配置手动地分离代码。
+防止重复：使用 CommonsChunkPlugin 去重和分离 chunk。
+动态导入：通过模块的内联函数调用来分离代码。
+
+
+缓存
+CommonsChunkPlugin 能够在每次修改后的构建结果中，将 webpack 的样板(boilerplate)和 manifest 提取出来。通过指定 entry 配置中未用到的名称，此插件会自动将我们需要的内容提取到单独的包中：
+	+     new webpack.optimize.CommonsChunkPlugin({
+	+       name: 'runtime'
+	+     })
+
+CommonsChunkPlugin  以通过使用新的 entry(入口) 起点，以及再额外配置一个 CommonsChunkPlugin 实例的组合方式来实现：
+//缓存，－－ 常不该动的 配置。比如 第三方库。
+	+   entry: {
+	+     main: './src/index.js',
+	+     vendor: [
+	+       'lodash'
+	+     ]
+	+   },
+
+	+     new webpack.optimize.CommonsChunkPlugin({
+	+       name: 'vendor'
+	+     }),
+
+模块标识符(Module Identifiers)
+	new webpack.HashedModuleIdsPlugin(),  
+	这个插件可以使   不管再添加任何新的本地依赖，对于每次构建，vendor hash 都应该保持一致：
+
+	注意，我们还可以通过以下配置方式，将 library 暴露：
+	global 对象中的属性，用于 Node.js。
+	this 对象中的属性。
+	完整的 library 配置和相关代码请参阅 webpack library 示例。
+
+外部化 lodash
+	+   externals: {
+	+     lodash: {
+	+       commonjs: 'lodash',
+	+       commonjs2: 'lodash',
+	+       amd: 'lodash',
+	+       root: '_'
+	+     }
+	+   }
+	或者 数组：
+	externals: [
+	  'library/one',
+	  'library/two',
+	  // Everything that starts with "library/"
+	  /^library\/.+$/
+	]
+
+Shimming
+使用 ProvidePlugin 后，能够在通过 webpack 编译的每个模块中，通过访问一个变量来获取到 package 包。
+	+ const webpack = require('webpack');
+	+   plugins: [
+	+     new webpack.ProvidePlugin({
+	+       _: 'lodash'
+	+     })
+	+   ]
+当模块运行在 CommonJS 环境下这将会变成一个问题，也就是说此时的 this 指向的是 module.exports。在这个例子中，你可以通过使用 imports-loader 覆写 this
+	+   module: {
+	+     rules: [
+	+       {
+	+         test: require.resolve('index.js'),
+	+         use: 'imports-loader?this=>window'
+	+       }
+	+     ]
+	+   }
+
+require.ensure 以及 AMD require 将采用异步式调用
+现在这些函数总是异步的，而不是当 chunk 已经加载完成的时候同步调用它们的回调函数(callback)。
+
+require.ensure 现在依赖于原生的 Promise。如果在不支持 Promise 的环境里使用 require.ensure，你需要添加 polyfill。
+
+//----------------------------
+webpack带的功能vue-loader：  以下是详细解释地址：
+https://vue-loader.vuejs.org/zh-cn/
+
+
+vue-loader 是一个 Webpack 的 loader，可以将用下面这个格式编写的 Vue 组件转换为 JavaScript 模块：
+它的特性：
+默认支持 ES2015；
+允许对 Vue 组件的组成部分使用其它 Webpack loader，比如对 <style> 使用 SASS 和对 <template> 使用 Jade；
+.vue 文件中允许自定义节点，然后使用自定义的 loader 进行处理；
+把 <style> 和 <template> 中的静态资源当作模块来对待，并使用 Webpack loader 进行处理；
+对每个组件模拟出 CSS 作用域；
+支持开发期组件的热重载。
+
+－－－－－－－－－vue-loader-------
+express：
+
+
+axios:  Axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和 node.js 中。
+
+https://www.kancloud.cn/yunye/axios/234845
+Axios 特点：
+从浏览器中创建 XMLHttpRequests
+从 node.js 创建 http 请求
+支持 Promise API
+拦截请求和响应
+转换请求数据和响应数据
+取消请求
+自动转换 JSON 数据
+客户端支持防御 XSRF
+
+
+vuex：
+https://vuex.vuejs.org/zh-cn/state.html
+Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。
+  state,
+  getters,   涉及state的各种其它计算属性
+  actions,  这个可以是异步， 可以使用分发dispatch,可以处理 promise方式处理异步。
+  mutations   同步
+
+mutation。
+更改 Vuex 的 store 中的状态的唯一方法是提交 mutation。
+
+Action 类似于 mutation，不同在于：
+
+Action 提交的是 mutation，而不是直接变更状态。
+Action 可以包含任意异步操作。
+
+Vuex 允许我们将 store 分割成模块（module）。每个模块拥有自己的 state、mutation、action、getter、甚至是嵌套子模块——从上至下进行同样方式的分割：
+
+
+
+http-proxy-middleware：
+express
+var express = require('express')
+var webpack = require('webpack')
+var proxyMiddleware = require('http-proxy-middleware')
+var webpackConfig = require('./webpack.dev.conf')
+
+var devMiddleware = require('webpack-dev-middleware')(compiler, {
+  publicPath: webpackConfig.output.publicPath,
+  quiet: true
+})
+
+var hotMiddleware = require('webpack-hot-middleware')(compiler, {
+  log: () => {}
+})
+
+app.use(require('connect-history-api-fallback')())
+
+jsencrypt:  数据加解密：工具
+
+qs:
+

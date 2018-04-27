@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> slot</title>
+</head>
+ <style type="text/css">
+body {
+  font-family: Helvetica Neue, Arial, sans-serif;
+  font-size: 14px;
+  color: #444;
+}
+
+table {
+  border: 2px solid #42b983;
+  border-radius: 3px;
+  background-color: #fff;
+}
+
+th {
+  background-color: #42b983;
+  color: rgba(255,255,255,0.66);
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+td {
+  background-color: #f9f9f9;
+}
+
+th, td {
+  min-width: 120px;
+  padding: 10px 20px;
+}
+
+th.active {
+  color: #fff;
+}
+
+th.active .arrow {
+  opacity: 1;
+}
+
+.arrow {
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  opacity: 0.66;
+}
+
+.arrow.asc {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid #fff;
+}
+
+.arrow.dsc {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #fff;
+}
+
+ </style>
+<body>
+<!-- 父组件模板 -->
+<div id="demo">
+  <h1>我是父组件的标题</h1>
+  <my-component v-if="showSlot" @close="showSlot = false">
+    <p>这是一些初始内容</p>
+    <p>这是更多的初始内容</p>
+  </my-component>
+  
+</div>
+
+
+<div class="parent" id="slot2">
+  <child>
+    <template scope="props">
+      <span>hello from parent</span>
+      <span>{{ props.text }}</span>
+    </template>
+  </child>
+</div>
+
+<script type="text/html" id="test_slot">
+<div>
+  <h2>我是子组件的标题</h2>
+  <slot>
+    只有在没有要分发的内容时才会显示。
+  </slot>
+  <button @click="$emit('close')">点击按钮显示隐藏slot</button>
+</div>
+</script>
+
+<script type="text/html" id="test_slot2">
+<div class="child">
+  <slot text="hello from child"></slot>
+</div>
+</script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+// register the grid component   这个是单个插槽。
+Vue.component('my-component', {
+  template: '#test_slot'
+})
+//这个是 作用域插槽。 这里有相当于子组件穿 数据 给到 父组件了。
+Vue.component('child', {
+  template: '#test_slot2',
+})
+
+// bootstrap the demo
+// var demo = new Vue({
+//   el: '#demo',
+//   data:{
+//     showSlot:true
+//   }
+// })
+
+// bootstrap the demo
+var demo2 = new Vue({
+  el: '#slot2',
+  data:{
+    showSlot:true
+  }
+})
+
+
+
+    </script>
+</body>
+
+</html>

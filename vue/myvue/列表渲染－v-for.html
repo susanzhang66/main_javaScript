@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> 列表渲染</title>
+</head>
+ <style type="text/css">
+
+
+ </style>
+<body>
+
+ <div>一。v-for.   用于对象与数组。
+ </div>
+ <script type="text/html">
+      @index: 对象的索引
+      @key:   对象的 健值
+      @value   对象的值。
+    <div v-for="(value, key, index) in object">
+      {{ index }}. {{ key }}: {{ value }}
+     </div>
+
+
+    2） 数组：   @item: 数组的值。
+                @index: 数组索引。
+     <ul id="example-2">
+      <li v-for="(item, index) in items">
+        {{ parentMessage }} - {{ index }} - {{ item.message }}
+      </li>
+    </ul>
+</script>
+
+
+ 
+ <B>注意：</B>   
+
+  <div>
+当 Vue.js 用 v-for 正在更新已渲染过的元素列表时，它默认用“就地复用”策略。如果数据项的顺序被改变，Vue 将不会移动 DOM 元素来匹配数据项的顺序， 而是简单复用此处每个元素，并且确保它在特定索引下显示已被渲染过的每个元素
+</div>   
+
+
+建议尽可能在使用 v-for 时提供 key，除非遍历输出的 DOM 内容非常简单，或者是刻意依赖默认行为以获取性能上的提升。
+
+因为它是 Vue 识别节点的一个通用机制，key 并不与 v-for 特别关联，key 还具有其他用途，我们将在后面的指南中看到其他用途。
+
+<br />
+
+当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级。
+
+<br />
+<div>
+  
+  列表api
+
+Vue 包含一组观察数组的变异方法，所以它们也将会触发视图更新。这些方法如下：
+<div>
+变异方法：
+ push()
+pop()
+shift()
+unshift()
+splice()
+sort()
+reverse() 
+</div>
+------------------------
+<div>
+非变异方法：  不会改变原始数组，但总是返回一个新数组
+filter(), concat() 和 slice() 
+<div>你可能认为这将导致 Vue 丢弃现有 DOM 并重新渲染整个列表。幸运的是，事实并非如此。Vue 为了使得 DOM 元素得到最大范围的重用而实现了一些智能的、启发式的方法，所以用一个含有相同元素的数组去替换原来的数组是非常高效的操作。</div>
+</div>
+
+</div>
+<!--   <div>
+    例如：
+    <div v-for="item in items" :key="item.id">
+       内容 
+    </div>
+
+  </div> -->
+
+<div>
+  <b>注意事项</b>
+
+由于 JavaScript 的限制，Vue 不能检测以下变动的数组：
+<br />
+当你利用索引直接设置一个项时，
+例如：vm.items[indexOfItem] = newValue
+解决：
+// Vue.set
+Vue.set(example1.items, indexOfItem, newValue)
+// Array.prototype.splice
+example1.items.splice(indexOfItem, 1, newValue)
+<br />
+当你修改数组的长度时，
+例如：vm.items.length = newLength
+
+</div>
+
+<!-- item template -->
+  
+
+    <div id="app">
+              <div id="app-7">
+              <ol>
+                  <!--
+              现在我们为每个 todo-item 提供待办项对象
+              待办项对象是变量，即其内容可以是动态的。
+              我们也需要为每个组件提供一个“key”，晚些时候我们会做个解释。
+
+              当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级。
+            -->
+                  <todo-item v-for="item in groceryList" v-if="item.id >0" v-bind:todo="item" v-bind:key="item.id">
+                  </todo-item>
+              </ol>
+              </div>
+    </div>
+
+<!-- item template -->
+
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+   // 定义名为 todo-item 的新组件
+    Vue.component('todo-item', {
+        // todo-item 组件现在接受一个
+        // "prop"，类似于一个自定义属性
+        // 这个属性名为 todo。
+
+        // 然而，任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域。为了把迭代数据传递到组件里，我们要用 props ：
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    })
+// boot up the demo
+    var app7 = new Vue({
+        el: '#app-7',
+        data: {
+            groceryList: [{
+                id: 0,
+                text: '蔬菜'
+            }, {
+                id: 1,
+                text: '奶酪'
+            }, {
+                id: 2,
+                text: '随便其他什么人吃的东西'
+            }]
+        }
+    })
+    </script>
+</body>
+
+</html>

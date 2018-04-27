@@ -1,0 +1,104 @@
+分解说明：
+initMixin =  vue.init()
+
+Vue$3.prototype.$mount
+ var mount = Vue$3.prototype.$mount;
+
+string: 字符串的编译。组件的编译。
+compileToFunctions()-> compile()->baseCompile(template, baseOptions) ->parse()->parseHTML()
+
+baseCompile－》
+parseHTML:核心函数。
+
+----------mountComponent ---------------
+－－》mountComponent（）
+   updateComponent = function() {
+	    //这里会渲染动作。。。  vm._render()：编译好的节点
+	    vm._update(vm._render(), hydrating);
+	};
+	// 渲染动作 加入watcher
+    vm._watcher = new Watcher(vm, updateComponent, noop);
+
+
+
+createElement.js ://    vm._c = createElement;
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+render函数： 
+
+
+下面 生成一个 虚拟dom
+(function() {
+with(this){return _c('div',{attrs:{"id":"app-6"}},[_c('p',[_v(_s(message))]),_v(" "),_c('input',{directives:[{name:"model",rawName:"v-model",value:(message),expression:"message"}],domProps:{"value":(message)},on:{"input":function($event){if($event.target.composing)return;message=$event.target.value}}})])}
+})
+
+另一个：
+(function() {
+with(this){return _c('table',[_c('thead',[_c('tr',_l((columns),function(key){return _c('th',{class:{ active: sortKey == key },on:{"click":function($event){sortBy(key)}}},[_v("\n          "+_s(_f("capitalize")(key))+"\n          "),_c('span',{staticClass:"arrow",class:sortOrders[key] > 0 ? 'asc' : 'dsc'})])}))]),_v(" "),_c('tbody',_l((filteredData),function(entry){return _c('tr',_l((columns),function(key){return _c('td',[_v("\n          "+_s(entry[key])+"\n        ")])}))}))])}
+})
+
+虚拟节点：
+http://blog.csdn.net/yczz/article/details/51292169
+//虚拟dom，参数分别为标签名（String）、属性对象( Object )、子DOM列表( Array )
+
+－－－－－－－－－
+
+事件：
+详解： $event.target.composing  这个是 touchstart, touchend之间的 缓冲标志。（排除长按的情况？）
+源码如下解释：//解决input的bug.....
+    function onCompositionStart(e) {
+        e.target.composing = true;
+    }
+
+    function onCompositionEnd(e) {
+        e.target.composing = false;
+        trigger(e.target, 'input');
+    }
+// Safari < 10.2 & UIWebView doesn't fire compositionend when
+// switching focus before confirming composition choice
+// this also fixes the issue where some browsers e.g. iOS Chrome
+// fires "change" instead of "input" on autocomplete.
+el.addEventListener('change', onCompositionEnd);
+if (!isAndroid) {
+	//compositionstart 事件触发于一段文字的输入之前
+    el.addEventListener('compositionstart', onCompositionStart);
+    //当文本段落的组成完成或取消时, compositionend 事件将被激发
+    el.addEventListener('compositionend', onCompositionEnd);
+}
+/*
+
+－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－－
+Render函数(createElement)。 示例： 进阶－render.html
+
+patchNode.js  : 
+vm.__patch__ :  将虚拟节点 插入 文档。。和触发相应的勾子函数.
+// var platformModules = [
+//     attrs,   //属性值，
+//     klass,  //样式
+//     events,
+//     domProps,
+//     style,
+//     transition
+// ];
+
+    Vue$3.prototype.__patch__ = inBrowser ? patch : noop;
+
+
+
+-------------defineProperty----------------
+
+Object.defineProperty(obj, prop, descriptor)
+obj
+需要被操作的目标对象
+prop
+目标对象需要定义或修改的属性的名称。
+descriptor
+将被定义或修改的属性的描述符。
+
+-------------defineProperty----------------
+
+SET value:
+
+flushSchedulerQueue  -> run ->get ->updateComponent
+
+
+

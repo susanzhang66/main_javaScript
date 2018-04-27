@@ -1,0 +1,299 @@
+/*
+ *调用方式
+ ＊Slide.run(imgid[0],{   //
+                direction : 'x',  //滑动方向 'y'
+                change_time: 3000,  //时间。
+                num : imgid.children().length,  //子元素个数
+                touchEndFun :function(page){   //滚动结束回调
+                    imgdotted.children().eq(page).addClass('curr').siblings().removeClass('curr');
+                }
+            })
+  */
+var Slide = (function(){
+
+        _fun = {
+            ios: function() {
+                var regular_result = navigator.userAgent.match(/.*OS\s([\d_]+)/),
+                os_boolean = !!regular_result;
+                if (!this._version_value && os_boolean) {
+                    this._version_value = regular_result[1].replace(/_/g, '.');
+
+                }
+                this.ios = function() {
+                    return os_boolean;
+                };
+                return os_boolean;
+
+            },
+            version: function() {
+                return this._version_value;
+
+            },
+            clone: function(object) {
+                function f() {}
+                f.prototype = object;
+                return new f;
+
+            }
+
+        };
+        var slipjs = {
+            _refreshCommon: function(wide_high, parent_wide_high) {
+                var that = this;  
+                that.wide_high = wide_high || that.core[that.offset] - that.up_range;
+                that.parent_wide_high = parent_wide_high || that.core.parentNode[that.offset];
+                that._getCoreWidthSubtractShellWidth();
+
+            },
+            _initCommon: function(core, param) {
+                // 作用：初始化
+                var that = this;
+                that.core = core;
+                that.startFun = param.startFun;
+                that.moveFun = param.moveFun;
+                that.touchEndFun = param.touchEndFun;
+                that.endFun = param.endFun;
+                that.direction = param.direction;
+                that.up_range = param.up_range || 0;
+                that.down_range = param.down_range || 0;
+                if (that.direction == 'x') {
+                    that.offset = 'offsetWidth';
+                    that._pos = that.__posX;
+
+                } else {
+                    that.offset = 'offsetHeight';
+                    that._pos = that.__posY;
+
+                }
+                that.wide_high = param.wide_high || that.core[that.offset] - that.up_range;
+                that.parent_wide_high = param.parent_wide_high || that.core.parentNode[that.offset];
+                that._getCoreWidthSubtractShellWidth();
+
+                that._bind("touchstart");
+                that._bind("touchmove");
+                that._bind("touchend");
+                that._bind("webkitTransitionEnd");            
+
+                that.xy = 0;
+                that.y = 0;
+                that._pos( - that.up_range); 
+
+
+            },
+            _getCoreWidthSubtractShellWidth: function() {
+                var that = this;
+                that.width_cut_coreWidth = that.parent_wide_high - that.wide_high;
+                that.coreWidth_cut_width = that.wide_high - that.parent_wide_high;
+
+            },
+             handleEvent: function(e) {
+                switch (e.type) {
+                    case "touchstart":
+                    this._start(e);
+                    break;
+                    case "touchmove":
+                    this._move(e);
+                    break;
+                    case "touchend":
+                    case "touchcancel":
+                    this._end(e);
+                    break;
+                    case "webkitTransitionEnd":
+                    this._transitionEnd(e);
+                    break;
+                }
+
+            },
+            _bind: function(type, boole) {
+                this.core.addEventListener(type, this, !!boole);
+
+            },
+            _unBind: function(type, boole) {
+                this.core.removeEventListener(type, this, !!boole);
+
+            },
+            __posX: function(x) {
+                this.xy = x;
+                this.core.style['webkitTransform'] = 'translate3d(' + x + 'px, 0px, 0px)';
+
+            },
+            __posY: function(x) {
+
+                this.xy = x;
+                this.core.style['webkitTransform'] = 'translate3d(0px, ' + x + 'px, 0px)';
+
+
+            },
+            _posTime: function(x, time) {
+                // 作用：缓慢移动
+                this.core.style.webkitTransitionDuration = '' + time + 'ms';
+                this._pos(x);
+
+            }
+
+        };
+        var SlipPage = _fun.clone(slipjs);
+        SlipPage._init = function(core, param) {
+            // 作用：初始化
+            var that = this;
+            that._initCommon(core, param);
+            that.num = param.num;
+            that.page = 0;
+            that.change_time = param.change_time;
+            that.lastPageFun = param.lastPageFun;
+            that.firstPageFun = param.firstPageFun;
+            param.change_time && that._autoChange();
+            param.no_follow ? (that._move = that._moveNoMove, that.next_time = 500) : that.next_time = 300;
+
+            that.toPage(that.page, that.next_time);
+
+            window.addEventListener('resize',this._resize(this),false);
+
+        };
+        SlipPage._start = function(e) {
+            // 触摸开始
+            var that = this,
+            e = e.touches[0];
+            that._abrupt_x = 0;
+            that._abrupt_x_abs = 0;
+            that._start_x = that._start_x_clone = e.pageX;
+            that._start_y = e.pageY;
+            that._movestart = undefined;
+            that.change_time && that._stop();
+            that.startFun && that.startFun(e);
+
+        };
+        SlipPage._move = function(evt) {
+            // 触摸中,跟随移动
+            var that = this;
+            that._moveShare(evt);  
+            if (!that._movestart) {
+                var e = evt.touches[0];
+                evt.preventDefault();
+                that.offset_x = (that.xy > 0 || that.xy < that.width_cut_coreWidth) ? that._dis_x / 2 + that.xy: that._dis_x + that.xy;
+                that._start_x = e.pageX;
+                if (that._abrupt_x_abs < 6) {  
+                    that._abrupt_x += that._dis_x;
+                    that._abrupt_x_abs = Math.abs(that._abrupt_x); 
+                    return;
+
+                }
+                that._pos(that.offset_x);
+                that.moveFun && that.moveFun(e);
+
+            }
+
+        };
+        SlipPage._moveNoMove = function(evt) {
+            var that = this;
+            that._moveShare(evt);
+            if (!that._movestart) {
+                evt.preventDefault();
+                that.moveFun && that.moveFun(e);
+
+            }
+
+        };
+        SlipPage._moveShare = function(evt) {
+            var that = this,
+            e = evt.touches[0];
+            that._dis_x = e.pageX - that._start_x;
+            that._dis_y = e.pageY - that._start_y;
+            typeof that._movestart == "undefined" && (that._movestart = !!(that._movestart || Math.abs(that._dis_x) < Math.abs(that._dis_y)));
+
+        };
+        SlipPage._end = function(e) {
+            if (!this._movestart) {
+                var that = this;
+                that._end_x = e.changedTouches[0].pageX;
+                that._range = that._end_x - that._start_x_clone;  
+                if (that._range > 50) {
+                    that.page != 0 ? that.page -= 1: (that.firstPageFun && that.firstPageFun(e));
+
+                } else if (Math.abs(that._range) > 50) {
+                    that.page != that.num - 1 ? that.page += 1: (that.lastPageFun && that.lastPageFun(e));
+
+                }
+                that.toPage(that.page, that.next_time);
+                
+
+            }
+
+        };
+        SlipPage._transitionEnd = function(e) {
+            var that = this;
+            e.stopPropagation();
+            that.core.style.webkitTransitionDuration = '0';
+            that._stop_ing && that._autoChange(),
+            that._stop_ing = false;
+            that.endFun && that.endFun(that.page);
+
+        };
+        SlipPage._resize = function(that) {     
+
+            return function(e){
+
+                e.stopPropagation();
+                that.core.style.webkitTransitionDuration = '0';
+                that._stop_ing && that._autoChange(),
+                that._stop_ing = false;
+                that.refresh();
+
+            }
+
+        };
+        SlipPage.toPage = function(num, time) {
+            this._posTime( - this.parent_wide_high * num, time || 0);
+            this.page = num;
+            this.touchEndFun && this.touchEndFun(this.page);
+            var currImg=$(this.core).children().eq(this.page);
+            currImg.addClass('curr').siblings().removeClass('curr');
+            if(!currImg.is('img') && currImg.children('img')){
+                currImg=currImg.children('img');
+            }
+            if(currImg.is('img')){
+                var src = currImg.attr('src'),_src = currImg.attr('_src');
+                if(_src != src){ //延迟加载图片处理
+
+                    currImg.attr('src', _src);
+                }
+            }
+        };
+        SlipPage._stop = function() {
+            clearInterval(this._autoChangeSet);
+            this._stop_ing = true;
+
+        };
+        SlipPage._autoChange = function() {
+            var that = this;
+            that._autoChangeSet = setInterval(function() {
+            that.page != that.num - 1 ? that.page += 1 : that.page = 0;
+            that.toPage(that.page, that.next_time);
+            },that.change_time);
+
+        };
+        SlipPage.refresh = function(wide_high, parent_wide_high) {
+            
+            this._refreshCommon(wide_high, parent_wide_high);
+            this.toPage(this.page, this.next_time);
+
+        };
+        function slip(core, param) {
+            param || (param = {});
+            if (_fun.ios() && (parseInt(_fun.version()) >= 5 && param.direction == 'x') && param.wit) {
+                core.parentNode.style.cssText += "overflow:scroll; -webkit-overflow-scrolling:touch;";
+
+            } else {
+           
+                param.direction = "x";
+                var page = _fun.clone(SlipPage)
+                page._init(core, param);
+                return page;
+
+            }
+
+        }
+        return {
+            run:slip
+        };
+    })();

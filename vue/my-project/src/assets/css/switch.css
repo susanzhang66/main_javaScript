@@ -1,0 +1,70 @@
+.ios7CBox{
+    margin:0;
+    padding:0;
+    border:none;
+    width:1.05rem;
+    height:.65rem;
+    position:relative;
+    color:#fff;
+    background:none;
+    -webkit-appearance: none;
+    appearance: none;
+    overflow: hidden;
+    border-radius: .33rem;
+    vertical-align: top;
+}
+.ios7CBox:before,
+.ios7CBox:after{
+    position: absolute;
+    left:0;top:0;
+    content:'';
+}
+.ios7CBox:before{
+    transition: all 0.4s;
+    position:absolute;
+    top:0;right:0;bottom:0;left:0;
+    border-radius: .33rem;
+    background:#bcbcbc;
+    border:.03rem solid #E5E5E5;
+}
+.ios7CBox:after{
+    transition: all 0.2s;
+    border-radius: .33rem;
+    top:.04rem;
+    left:.02rem;
+    width:.56rem;
+    height:.56rem;
+    background:#fff;
+    box-shadow:0px .04rem .08rem rgba(0,0,0,0.3),0px 0px .02rem rgba(0,0,0,0.3);
+}
+.ios7CBox.checked:before{
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    border-style:solid;
+    border-color:#4CD864;
+    border-width: .32rem .32rem .32rem 1.04rem;
+}
+.ios7CBox.checked:after{
+    -webkit-animation: ios7CBox_after_checked 0.4s;-webkit-animation-fill-mode:both;
+    -moz-animation: ios7CBox_after_checked 0.4s;-moz-animation-fill-mode:both;
+}
+@-webkit-keyframes ios7CBox_after {
+    0% {left:.45rem;}
+    70% {left:.01rem;}
+    100% {left:.04rem;}
+}
+
+@-webkit-keyframes ios7CBox_after_checked {
+    0% {left:.04rem;}
+    70% {left:.47rem;}
+    100% {left:.45rem;}
+}
+
+.ios7CBox:disabled{
+    opacity:0.6;
+}
+.ios7CBox:disabled:checked:before{
+    border-color:#ddd;
+}

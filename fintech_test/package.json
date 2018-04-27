@@ -1,0 +1,17 @@
+{
+  "name": "fintech_test",
+  "version": "1.0.0",
+  "description": "tinte",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "test"
+  ],
+  "author": "susan",
+  "license": "ISC",
+  "dependencies": {
+    "@puhui/fintechui": "0.0.12"
+  }
+}

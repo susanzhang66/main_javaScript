@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> 条件渲染</title>
+</head>
+ <style type="text/css">
+
+
+ </style>
+<body>
+<!-- item template -->
+  
+
+    <div id="app">
+          <template v-if="ok">
+            <h1>Title</h1>
+            <p>Paragraph 1</p>
+            <p>Paragraph 2</p>
+          </template>
+
+          <template v-if="loginType === 'username'">
+            <label>Username</label>
+            <input placeholder="Enter your username"  key="username-input">
+          </template>
+          <template v-else>
+            <label>Email</label>
+            <input placeholder="Enter your email address" key="email-input">
+          </template>
+          <button @click="func">更换</button>
+    </div>
+
+
+ <div>一。v-if</div>
+ 
+ <div>二。用key管理可复用的元素</div>   
+
+  <div>三。v-show</div>   
+  不同的是带有 v-show 的元素始终会被渲染并保留在 DOM 中。v-show 只是简单地切换元素的 CSS 属性 display。
+  注意，v-show 不支持 template 元素，也不支持 v-else。
+  <div>四。当 v-if 与 v-for 一起使用时，v-for 具有比 v-if 更高的优先级。</div>
+
+
+
+
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+// Vue.component('template', {
+//     template: '<button v-on:click="increment1">{{ counter }}</button>',
+//     data: function() {
+//         return {
+//             counter: 0
+//         }
+//     },
+//     methods: {
+//         increment1: function() {
+//             this.counter += 1
+//             this.$emit('increment')
+//         }
+//     },
+// })
+// boot up the demo
+var demo = new Vue({
+  el: '#app',
+  data:{
+      ok:true,
+      loginType:"username"
+  },
+  methods:{
+    func:function(){
+        if( this.loginType === 'username'){
+            this.loginType = 'Email';
+        }else{
+           this.loginType = 'username';
+        }
+    }
+  }
+})
+    </script>
+</body>
+
+</html>

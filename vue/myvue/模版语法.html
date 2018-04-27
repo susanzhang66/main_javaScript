@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> 模版语法</title>
+</head>
+ <style type="text/css">
+
+
+ </style>
+<body>
+<!-- item template -->
+  <div> CESHIO ..DAF</div>
+
+    <div id="app">
+      <div v-html="rawHtml"></div>
+      <a v-bind:href="url">xxxx</a>
+      <div>{{reversedMessage()}}</div>
+      <div>{{now}}</div>
+    </div>
+    
+
+
+
+
+
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+// Vue.component('button-counter', {
+//     template: '<button v-on:click="increment1">{{ counter }}</button>',
+//     data: function() {
+//         return {
+//             counter: 0
+//         }
+//     },
+//     methods: {
+//         increment1: function() {
+//             this.counter += 1
+//             this.$emit('increment')
+//         }
+//     },
+// })
+// boot up the demo
+var demo = new Vue({
+  el: '#app',
+  data:{
+      rawHtml:"<div>niaho da </div>",
+      url:"http://www.baidu.com",
+      message:'test'
+  },
+  computed: {
+    now: function () {
+      return Date.now()
+    }
+  },
+  methods: {
+    reversedMessage: function () {
+      return this.message.split('').reverse().join('')
+    }
+  }
+})
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>arrayBuffer</title>
+</head>
+
+<body>
+ <div>
+ <pre>
+   
+   流（stream）在 Node.js 中是处理流数据的抽象接口（abstract interface）。 stream 模块提供了基础的 API 。使用这些 API 可以很容易地来构建实现流接口的对象。
+
+Node.js 提供了多种流对象。 例如， HTTP 请求 和 process.stdout 就都是流的实例。
+
+流可以是可读的、可写的，或是可读写的。所有的流都是 EventEmitter 的实例。
+
+
+Node.js 中有四种基本的流类型：
+
+Readable - 可读的流 (例如 fs.createReadStream()).
+Writable - 可写的流 (例如 fs.createWriteStream()).
+Duplex - 可读写的流 (例如 net.Socket).
+Transform - 在读写过程中可以修改和变换数据的 Duplex 流 (例如 zlib.createDeflate()).
+
+对象模式
+	只能操作 strings 和 Buffer（或 Uint8Array） 对象。
+	在创建流的实例时，可以通过 objectMode 选项使流的实例切换到对象模式
+	将已经存在的流切换到对象模式是不安全的。
+
+缓冲
+	Writable 和 Readable 流都会将数据存储到内部的缓存（buffer）中。
+	highWaterMark
+
+	Duplex 和 Transform 都是可读写的。 在内部，它们都维护了 两个 相互独立的缓存用于读和写。
+
+流消费者的 API
+
+可写流
+	Writable streams 是 destination 的一种抽象，这种 destination 允许数据写入。
+
+	Writable 的例子包括了：
+	HTTP requests, on the client
+	HTTP responses, on the server
+	fs write streams
+	zlib streams
+	crypto streams
+	TCP sockets
+	child process stdin
+	process.stdout, process.stderr
+
+	注意: 上面的某些例子事实上是 Duplex 流，只是实现了 Writable 接口。
+
+	所有 Writable 流都实现了 stream.Writable 类定义的接口。
+
+stream.Writable 类
+
+'pipe' 事件
+src <stream.Readable> 输出到目标可写流（writable）的源流（source stream）
+在可读流（readable stream）上调用 stream.pipe() 方法，并在目标流向 (destinations) 中添加当前可写流 ( writable ) 时，将会在可写流上触发 'pipe' 事件。
+
+'unpipe' 事件
+src <Readable Stream> unpiped 当前可写流的源流
+在 Readable 上调用 stream.unpipe() 方法，从目标流向中移除当前 Writable 时，将会触发 'unpipe' 事件。
+ </pre>
+
+ writable.cork()
+ 调用 writable.cork() 方法将强制所有写入数据都存放到内存中的缓冲区里。 直到调用 stream.uncork() 或 stream.end() 方法时，缓冲区里的数据才会被输出。
+
+ 在调用了 stream.end() 方法之后，再调用 stream.write() 方法将会导致错误。
+
+ writable.uncork() 将输出在 stream.cork() 方法被调用之后缓冲在内存中的所有数据。
+
+ writable.write() 方法向流中写入数据，并在数据处理完成后调用 callback 。如果有错误发生， callback 不一定 以这个错误作为第一个参数并被调用。要确保可靠地检测到写入错误，应该监听 'error' 事件。
+在确认了 chunk 后，如果内部缓冲区的大小小于创建流时设定的 highWaterMark 阈值，函数将返回 true 。 如果返回值为 false ，应该停止向流中写入数据，直到 'drain' 事件被触发。
+
+当一个流不处在 drain 的状态， 对 write() 的调用会缓存数据块， 并且返回 false。 一旦所有当前所有缓存的数据块都排空了（被操作系统接受来进行输出）， 那么 'drain' 事件就会被触发。
+
+/--------------------
+可读流
+	可读流（Readable streams）是对提供数据的 源头 （source）的抽象。
+	可读流事实上工作在下面两种模式之一：flowing 和 paused 。
+
+	在 flowing 模式下， 可读流自动从系统底层读取数据，并通过 EventEmitter 接口的事件尽快将数据提供给应用。
+
+
+	在 paused 模式下，必须显式调用 stream.read() 方法来从流中读取数据片段。
+	所有初始工作模式为 paused 的 Readable流，可以通过下面三种途径切换到flowing 模式：
+	监听 'data' 事件。
+	调用 stream.resume() 方法。
+	调用 stream.pipe() 方法将数据发送到 Writable。 
+
+	可读流可以通过下面途径切换到 paused 模式：
+	如果不存在管道目标（pipe destination），可以通过调用 stream.pause() 方法实现。
+	如果存在管道目标，可以通过取消 'data' 事件监听，并调用 stream.unpipe() 方法移除所有管道目标来实现。
+
+
+注意: 为了向后兼容，取消 'data' 事件监听并 不会 自动将流暂停。同时，如果存在管道目标（pipe destination），且目标状态变为可以接收数据（drain and ask for more data），调用了 stream.pause() 方法也并不保证流会一直 保持 暂停状态。
+
+注意: 如果 Readable 切换到 flowing 模式，且没有消费者处理流中的数据，这些数据将会丢失。 比如， 调用了 readable.resume() 方法却没有监听 'data' 事件，或是取消了 'data' 事件监听，就有可能出现这种情况。
+
+三种状态：
+readable._readableState.flowing = null
+readable._readableState.flowing = false
+readable._readableState.flowing = true
+
+
+选择一种
+对于大多数用户，建议使用 readable.pipe() 方法来消费流数据，因为它是最简单的一种实现。开发者如果要精细地控制数据传递和产生的过程，可以使用 EventEmitter 和 readable.pause()/readable.resume() 提供的 API 。
+ </div>
+    <script type="text/javascript">
+
+
+stream.Readable 类
+'close' 事件
+'close' 事件将在流或其底层资源（比如一个文件）关闭后触发。'close' 事件触发后，该流将不会再触发任何事件。
+
+不是所有 Readable 都会触发 'close' 事件。
+
+'data' 事件    'data' 事件会在流将数据传递给消费者时触发。
+
+'end' 事件   'end' 事件将在流中再没有数据可供消费时触发。
+注意： 'end' 事件只有在数据被完全消费后 才会触发 
+
+'error' 事件
+
+'readable' 事件 事件将在流中有数据可供读取时触发。
+
+readable.isPaused()
+readable.pause() 方法将会使 flowing 模式的流停止触发 'data' 事件， 进而切出 flowing 模式。任何可用的数据都将保存在内部缓存中。
+readable.pipe(destination[, options])   －－－ 数据写入目标
+
+
+
+
+readable.pipe() 
+方法返回 目标流 的引用，这样就可以对流进行链式地管道操作  r.pipe(z).pipe(w);
+这里有一点要警惕，如果可读流在处理时发生错误，目标可写流 不会 自动关闭。 如果发生错误，需要 手动 关闭所有流以避免内存泄漏。
+
+readable.read([size])  
+-- 方法从内部缓冲区中抽出并返回一些数据。
+readable.read()方法只应该在暂停模式下的可读流上运行。在流模式下，readable.read()自动调用直到内部缓冲区的数据完全耗尽。
+一般来说，建议开发人员避免使用'readable'事件和readable.read()方法，使用readable.pipe()或'data'事件代替。
+
+readable.unpipe([destination])    
+ 	将之前通过stream.pipe()方法绑定的流分离
+
+ readable.unshift(chunk)
+ readable.wrap(stream)
+
+
+ Duplex 流与 Transform 流
+
+Duplex 流是同时实现了 Readable 和 Writable 接口的流。
+Duplex 流的实例包括了：
+	TCP sockets
+	zlib streams
+	crypto streams
+
+
+stream.Transform 类     变换流
+变换流的实例包括：
+	zlib streams
+	crypto streams
+
+transform.destroy([error])
+
+API for Stream Implementers
+
+stream模块API的设计是为了让JavaScript的原型继承模式可以简单的实现流。
+首先，一个流开发者可能声明了一个JavaScript类并且继承四个基本流类中的一个（stream.Weiteable，stream.Readable，stream.Duplex，或者stream.Transform），确保他们调用合适的父类构造函数:
+
+    </script>
+</body>
+
+</html>

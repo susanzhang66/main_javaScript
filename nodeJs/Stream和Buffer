@@ -1,0 +1,76 @@
+Stream和Buffer
+Stream是NodeJS（也可以说是后端）中的一个必不可少的概念。 
+让我们操作大文件或者大传输流的时候，可以分批处理，而不用一次性把内容读取到缓冲区才开始处理。
+
+What
+Stream
+在一个应用程序中，流是一组有序的、有起点和终点的字节数据的传输手段。
+
+Buffer
+用于创建一个专门存放二进制数据的缓存区
+
+1.1 Stream
+Stream 有四种流类型，且所有的 Stream 对象都是 EventEmitter 的实例： 
+- Readable – 可读操作。 
+- Writable – 可写操作。 
+- Duplex – 可读可写操作. 
+- Transform – 操作被写入数据，然后读出结果。
+
+这意味着Stream对象有四种，同时每个Stream对象都有他们对应的事情。这些事件会在下文阐述。
+
+1.2 Buffer
+NodeJS的Buffer详解：http://www.cnblogs.com/dwj0931-node/p/5397986.html
+
+Buffer的用途：文件传输或者大数据传输
+Buffer的字节管理
+Buffer对象与其他对象的转换
+Buffer的保存
+Why
+在后端中应用，因为在后端与前端、后端的IO中，很大机会会出现文件太大，不能一次性读取的问题。因此在前端中使用的方法：整体读取后再进行操作，会导致程序的等待时间过长，因此，流操作（stream）便营运而生。
+
+在readable和writable的Stream之间筑起沟通，如果仅仅使用事件方法来进行的话，代码会显得很冗杂，因此需要出现pipe（管道）方法来进行。
+
+readable.pipe(writable);
+//返回值为writable的对象
+1
+2
+在数据传输过程中，如果需要把其中一段Stream截取并且进行修改查看，则需要Buffer类来进行协助，并且转化成其他的人类可理解对象
+How
+所有的 Stream 对象都是 EventEmitter 的实例。常用的事件有： 
+- data – 当有数据可读时触发。 
+- end – 没有更多的数据可读时触发。 
+- error – 在接收和写入过程中发生错误时触发。 
+- finish – 所有数据已被写入到底层系统时触发。 
+- drain—缓冲区已满
+
+在文件流读取、写入中，有特定的事件可以提供监听。
+
+在读取到的二进制Bytes中，如何把字节重新解读成我们需要的数据 
+通常传输的文件是图片、音频、视频等文件，中间程序要处理的有（百分比评估、是否传输完成、再一次传输给别的地方等），而不会在传输过程中要求打开修改文件（又不是迅雷那种边下载边看 
+setEncoding和Buffer
+
+前端如何以流的方式发送信息给后端（socket）
+
+可操作的流：socket、webSocket。 
+以socket形式传输的流，前端是可以控制传输的量，并且得到反馈的。例如传输一张图片，用流（二进制）的方式来传输，可以精确到传输的百分比、断点续传等功能。
+
+一次性的流：http 
+HTTP传输的Request和Response，则是一次性后端读取到一系列信息，但是后端在处理的时候，是完全可以用Readable Stream的形式来读取的。
+
+Different
+Stream与readFile、readFileSync 
+Stream是每次读取一部分进入缓冲区，并且根据开发者定义的事件进行处理。 
+而ReadFile、ReaderFileSync这些则是异步（或者同步）一次性把文件读取进入缓冲区，然后再进行操作。
+
+Scene(应用场景）
+5.1 Stream的使用场景
+大文件传输（不能短期阻塞完成的） 
+文件需要多次传输的，使用pipe（防止代码过于冗杂）
+
+5.2 Buffer的使用场景
+需要操作流的时候（大文件、大量数据）
+
+参考资料
+Steam：http://www.uedsc.com/course-nodejs-stream.html
+理解NodeJS的pipe机制：https://www.web-tinker.com/article/21029.html
+《Node.js权威指南》

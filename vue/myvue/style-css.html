@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> class, style绑定</title>
+</head>
+ <style type="text/css">
+
+
+ </style>
+<body>
+<!-- item template -->
+  <p>
+Class 与 Style 绑定
+在将 v-bind 用于 class 和 style 时，Vue.js 做了专门的增强。表达式结果的类型除了字符串之外，还可以是对象或数组。
+<br/>
+1.对象语法  v-bind:class
+2. v-bind:class 指令也可以与普通的 class 属性共存。
+
+<br/>
+<div>一，对象语法：</div>
+1)传入对象：
+<div v-bind:class="{ active: isActive }"></div>  
+2)与普通的 class 属性共存:
+<br/>
+<div class="static"
+     v-bind:class="{ active: isActive, 'text-danger': hasError }">
+</div>
+如果 hasError 的值为 true，class 列表将变为 "static active text-danger"。
+  </p>
+
+ <p>
+   3）.class 绑定的数据对象不必内联定义在模板里：
+  <div v-bind:class="classObject"></div>
+
+  data: {
+    classObject: {
+      active: true,
+      'text-danger': false
+    }
+  }
+  或者computed,也行
+ </p> 
+ <div>
+   二。数组语法： 我们可以把一个数组传给 v-bind:class，以应用一个 class 列表：
+   <div v-bind:class="[activeClass, errorClass]"></div>
+    data: {
+      activeClass: 'active',
+      errorClass: 'text-danger'
+    }
+ </div>
+--------------------------
+ <div>
+   三。可以应用到 组件上。
+   比如：
+   Vue.component('my-component', {
+      template: '<p class="foo bar">Hi</p>'
+   })
+
+   <my-component class="baz boo"></my-component>
+
+   会被渲染成：
+
+   <p class="foo bar baz boo">Hi</p>
+
+ </div>
+ ----------------------------
+
+ <div>四。绑定内联样式 style</div>
+ <div>1)对象语法
+
+v-bind:style 的对象语法十分直观——看着非常像 CSS，但其实是一个 JavaScript 对象。CSS 属性名可以用驼峰式 (camelCase) 或短横线分隔 (kebab-case，记得用单引号括起来) 来命名：</div>
+
+          <div v-bind:style="{ color: activeColor, fontSize: fontSize + 'px' }"></div>
+
+<div>2)数组语法</div>
+          <div v-bind:style="[baseStyles, overridingStyles]"></div>
+<div>3)自动添加前缀－比如：transform</div>
+   
+4) 多重值：支持的只会渲染一个
+
+
+    <div id="app">
+      这里数组 data里传的是class名字
+      <div v-bind:class="[activeClass, errorClass]">hello ,喂。。数组语法 。</div>
+      这里对象里传入的 data里的值是 布尔值。
+      <div class="static"
+     v-bind:class="{ active: isActive, 'text-danger': hasError }">
+     对象方式
+      </div>
+      <div :style="{ display: ['-webkit-box', '-ms-flexbox', 'flex'] }">这里只会拿一个支持的值。</div>
+    </div>
+
+    
+
+
+
+
+
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+
+
+var demo = new Vue({
+  el: '#app',
+  data: {
+      activeClass: 'active',
+      errorClass: 'text-danger',
+      isActive: 'true',
+      hasError: 'true'
+  },
+  computed: {
+    now: function () {
+      return Date.now()
+    }
+  },
+  methods: {
+    reversedMessage: function () {
+      return this.message.split('').reverse().join('')
+    }
+  }
+})
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title>jquery函数的扩展与callbacks</title>
+</head>
+
+<body>
+    <div id="nodes">kfd</div>
+    <div id="stop">stopdafa</div>
+    <script type="text/javascript" src="./js/zepto.js"></script>
+    <script type="text/javascript">
+    /*
+     * resolved,rejected它们是两个函数，由JavaScript引擎提供.
+    */
+    // var promise = new Promise(function(resolved, rejected){
+
+    //     resolved();
+
+    // })
+    // promise为实例对象
+    // promise.then(function(value) {
+    //   // success
+    // }, function(error) {
+    //   // failure
+    // });
+
+        // function timeout(ms) {
+        //   return new Promise((resolve, reject) => {
+        //     setTimeout(resolve, ms, 'done');
+        //   });
+        // }
+
+        // timeout(5000).then((value) => {
+        //   console.log(value);
+        // });
+        // $.Callbacks({once:1, memory:1})
+
+        // let promise = new Promise(function(resolve, reject) {
+        //   console.log('Promise');
+        //   resolve();
+        // });
+
+        // promise.then(function() {
+        //   console.log('Resolved.');
+        // });
+
+        // console.log('Hi!');
+
+        function getLocation() {
+            var self = this,
+                dif = $.Deferred();
+            if (dif.state() == 'pending') {
+                console.log('jujue')
+            }
+            setTimeout( function() {
+                console.log("nihao")
+                //这里是触发
+                dif.resolve('通过');
+            },5000);
+            setTimeout(function() {
+                
+                dif.reject('拒绝');
+                
+            }, 3000);
+            return dif.promise();
+        }
+        // then里的函数 是加入监听数组，
+        getLocation().then(function( data ){
+            console.log('111'+data);
+        },
+        function(data){
+            console.log('2222'+data);
+        })
+
+
+        // $.get("../imge/d.jpg").then(
+        //     function(){ alert("$.get succeeded"); },
+        //     function(){ alert("$.get failed!"); }
+        // );
+
+        // var onceCallbacks = $.Callbacks('once');
+//======================
+        // 　　var dtd = $.Deferred(); // 新建一个deferred对象
+        // 　　var wait = function(dtd){
+        // 　　　　var tasks = function(){
+        // 　　　　　　alert("1111111执行完毕！");
+        // 　　　　　　dtd.resolve(); // 改变deferred对象的执行状态
+        // 　　　　};
+        // 　　　　setTimeout(tasks,5000);
+        // 　　　　return dtd;
+        // 　　};
+
+        //     var wait2 = function(dtd){
+        // 　　　　var tasks = function(){
+        // 　　　　　　alert("22222完毕");
+        // 　　　　　　dtd.resolve(); // 改变deferred对象的执行状态
+        // 　　　　};
+        // 　　　　setTimeout(tasks,1000);
+        // 　　　　return dtd;
+        // 　　};
+
+        //   $.when(wait(dtd)).then( wait2(dtd));
+        // 　　.done(function(){ alert("哈哈，成功了！"); })
+        // 　　.fail(function(){ alert("出错啦！"); });
+        // function fn1( value ) {
+        //   console.log("fn1:" + value );
+        // }
+          
+        // function fn2( value ) {
+        //   console.log( "fn2:" + value );
+        // }
+
+        // var onceCallbacks = $.Callbacks('once');
+        // onceCallbacks.add(fn1,fn2);
+        // onceCallbacks.fire(1); // 打印1
+        // onceCallbacks.fire(1); // fn不再触发
+
+        //es6 的deffer..
+        // var p = new Promise(function( resolve, reject ){
+        //     var wait = ()=>{ 
+        //         var tasks = ()=>{
+                    
+        //             resolve('时间长的');
+        //         }
+        //         setTimeout(tasks,5000);
+        //     };
+        //     wait();
+
+        // })
+        // var p2 = new Promise(function( resolve, reject ){
+        //     var wait = ()=>{ 
+        //         var tasks = ()=>{
+                    
+        //             resolve('时间短的'); 
+        //         }
+        //         setTimeout(tasks,1000);
+        //     };
+        //     wait();
+
+        // })
+        // // var c = Promise.all([ p, p2]);
+        // // p.then(( data )=>{ console.log( data )})
+        // //     .catch( ( e )=>{ console.log( '出错了。')});
+
+        // p.then(( data )=>{ console.log( data ); alert(111111); })
+        //     .then( ()=>{ p2.then( (result) => { console.log( result ); alert(222222222); } )});
+
+
+    </script>
+</body>
+
+</html>

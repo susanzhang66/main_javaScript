@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+    <title> 表单输入绑定 </title>
+</head>
+ <style type="text/css">
+
+
+ </style>
+<body>
+
+1. 你可以用 v-model 指令在表单控件元素上创建双向数据绑定。
+2. input,文本，多行文本
+3. 复选框，（单个，多个）
+单个勾选框，逻辑值：
+多个勾选框，绑定到同一个数组：
+4.单选框（单个，多个）   多选列表，单选列表。
+
+
+5. 值绑定：
+对于单选按钮，勾选框及选择列表选项，v-model 绑定的 value 通常是静态字符串 (对于勾选框是逻辑值)：
+
+
+
+
+<!-- item template -->
+  
+
+    <div id="app">
+             <input type="checkbox" id="checkbox" v-model="checked">
+             <label for="checkbox">{{ checked }}</label>
+
+             <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+              <label for="jack">Jack</label>
+              <input type="checkbox" id="john" value="John" v-model="checkedNames">
+              <label for="john">John</label>
+              <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+              <label for="mike">Mike</label>
+              <br>
+              <span>Checked names: {{ checkedNames }}</span>
+    </div>
+
+
+<div id="example-4">
+  <input type="radio" id="one" value="One" v-model="picked">
+  <label for="one">One</label>
+  <br>
+  <input type="radio" id="two" value="Two" v-model="picked">
+  <label for="two">Two</label>
+  <br>
+  <span>Picked: {{ picked }}</span>
+</div>
+
+<div id="example-5">
+  <select v-model="selected">
+    <option disabled value="">请选择</option>
+    <option>A</option>
+    <option>B</option>
+    <option>C</option>
+  </select>
+  <span>Selected: {{ selected }}</span>
+</div>
+
+
+
+<!-- item template -->
+
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+
+// boot up the demo
+    var app7 = new Vue({
+        el: '#app',
+        data: {
+            checked: false,
+            checkedNames: []
+        },
+        methods:{
+            clear: function(argument) {
+              alert(1);
+            },
+            doSomething: function(){
+               alert('something')
+            },
+            submit: function(){
+              alert('submit')
+            }
+        }
+    })
+
+    new Vue({
+      el: '#example-4',
+      data: {
+        picked: ''
+      }
+    })
+
+new Vue({
+  el: '#example-5',
+  data: {
+    selected: ''
+  }
+})
+    </script>
+</body>
+
+</html>

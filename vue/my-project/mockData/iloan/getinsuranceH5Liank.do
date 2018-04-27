@@ -1,0 +1,13 @@
+{
+	"flag":"1",
+	"data":{
+		"result_code":"1",
+		"md5Code":"",
+		"return_flag":"1",
+		"appl_no":"",
+		"h5_link_addr":"",
+		"result_msg":"返回成功",
+		"cover_no":"20170306"
+	},
+	"msg":"返回信息"
+}
