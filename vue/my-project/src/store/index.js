@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import login from './login'
 import http from './http'
+import account from './account'
 Vue.use(Vuex)
 
 // const store = new Vuex.Store({
@@ -19,6 +20,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   modules: {
     http,
-    login
+    login,
+    account
   }
 })
