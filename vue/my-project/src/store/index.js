@@ -3,6 +3,8 @@ import Vue from 'vue'
 import login from './login'
 import http from './http'
 import account from './account'
+import signature from './signature'
+import borrow from './borrow'
 Vue.use(Vuex)
 
 // const store = new Vuex.Store({
@@ -21,6 +23,8 @@ export default new Vuex.Store({
   modules: {
     http,
     login,
-    account
+    account,
+    signature,
+    borrow
   }
 })

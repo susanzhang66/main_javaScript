@@ -8,8 +8,14 @@ import store from './store'
 import prototypes from './plugins/prototype'
 import Dialog from './components/dialog/index.js'
 import utils from './plugins/util'
+import Tip from './components/tip/index.js'
+import filters from './plugins/filter'
 
+// 注册全局调用的tip提示
+Vue.use(Tip)
 
+// 注册全局过滤器
+Object.keys(filters).forEach(k => Vue.filter(k, filters[k]))
 // 注册全局函数   这个是加解秘， jsencrypt。
 Object.keys(prototypes).forEach(k => { Vue.prototype[k] = prototypes[k] })
 
@@ -18,9 +24,9 @@ Vue.use( Dialog );
 Vue.config.productionTip = false 
 
 /* eslint-disable no-new */
-new Vue({
+window.appVue = new Vue({
   el: '#app',
-  store,
+  store,     // 把 store 对象提供给 “store” 选项，这可以把 store 的实例注入所有的子组件
   router,
   components: { App },// 局部组件。
   template: '<App/>'

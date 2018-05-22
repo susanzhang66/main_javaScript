@@ -21,7 +21,7 @@
             "rpyDay": "5",
             "rpyBnakName": "平安银行储蓄卡(8765)",
             "rpyBnakNo": "1",
-            "fundingModel": "L",
+            "fundingModel": "U",
             "cgiBankName": "重庆银行",
             "serviceCharge": "0.030",
             "premium": "0.012",

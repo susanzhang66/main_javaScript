@@ -1,14 +1,19 @@
 <template>
   <div id="app">
+    <http></http>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import http from './components/http'
 
 export default{
   name:'counter',
+  components: {
+    http
+  },
   computed: {
     // 使用对象展开运算符将 getter 混入 computed 对象中
     //如果你想将一个 getter 属性另取一个名字，使用对象形式：比如：getLogin改名 login

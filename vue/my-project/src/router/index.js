@@ -1,13 +1,19 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from './login'
+import account from './account'
+import signature from './signature'
+import borrow from './borrow'
 
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    login
+    login,
+    account,
+    signature,
+    borrow
   ]
 })
 

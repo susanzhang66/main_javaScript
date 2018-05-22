@@ -48,11 +48,14 @@ export default {
         }
     },
     created: function(){
-        this.$dialog.show({'msg':'dafdafda'})
+        //this.$dialog.show({'msg':'dafdafda'})
     },
+    //computed的key值不能跟 data /props的key值一样
     computed:{
+          //当一个组件需要获取多个状态时候，将这些状态都声明为计算属性会有些重复和冗余。为了解决这个问题，我们可以使用 mapState 辅助函数帮助我们生成计算属性，让你少按几次键：
           ...mapGetters({
-              picCode: 'getPicCode'
+              picCode: 'getPicCode',
+              smsCode: 'getSmsCode'
           })
     },
     watch: {
@@ -74,21 +77,39 @@ export default {
                 console.log('手机号有误，请重新输入！')
                 // this.$tip.show({message: '手机号有误，请重新输入！'})
                 this.inputMobile = ''
-                // this.showPicCode = false
-                // this.inputPicCode = ''
-                // this.inputSmsCode = ''
-                // this.enableNext = false
                 return false
               }
 
         },
+        validatePicCode () {
+          const isPicCode = str => /[A-Za-z0-9]{4}/.test(str)
+          if (isPicCode(this.inputPicCode)) {
+            return true
+          } else {
+            this.$tip.show({message: '图形码有误，请重新输入！'})
+            this.inputPicCode = ''
+            this.inputSmsCode = ''
+            return false
+          }
+        },
+        validateSmsCode () {
+          const isSmsCode = str => /\d{7}/.test(str)
+          if (isSmsCode(this.inputSmsCode)) {
+            return true
+          } else {
+            this.$tip.show({message: '验证码有误，请重新输入！'})
+            this.inputSmsCode = ''
+            return false
+          }
+        },
         //获取图形接口
         fetchPicCode () {
               var self = this;
-              utils.$delay( picode, 500 );
 
-              function picode(){
-                  //this = self;
+                  //setLoginParams,这个mutations,相当于给state['picCodeParams'] = {
+                  //  type: 'h5_login_code',
+                  //  mobile: this.inputMobile
+                  // }
                   this.$store.commit('setLoginParams', {
                     paramsKey: 'picCodeParams',
                     type: 'h5_login_code',
@@ -96,17 +117,10 @@ export default {
                   })
                   this.$store.dispatch('picCode').then((data) => {
                       this.showPicCode = true
-                      this.inputPicCode = ''
-                      this.inputSmsCode = ''
-                      this.enableNext = false
                       this.$nextTick(function () {
                         this.$refs.inputPicCode.focus()
                       })
-                  })
-
-              }
-                
-              
+                  })            
             
         },
         countDown ( times ) {
@@ -124,12 +138,15 @@ export default {
         },
         //获取验证码接口
         fetchSmsCode () {
+            if(! this.validatePicCode() ) return;
             if(this.smsCodeText !== '获取验证码') return;
+            //请求入參
             this.$store.commit('setLoginParams', {
               paramsKey: 'smsCodeParams',   //设置的新的state的key名称。下面的是 它的值。
               picCode: this.inputPicCode,
               mobile: this.rsaEncrypt(this.inputMobile)
             })
+            //发起请求
             this.$store.dispatch('smsCode').then((data) => {
 
                this.inputSmsCode = ''
@@ -141,18 +158,21 @@ export default {
         },
         fetchOtp () {
             if (!this.enableNext) return
-            this.$store.commit('setLoginParams', {
-                  paramsKey: 'otpParams',   //设置的新的state的key名称。下面的是 它的值。 注意这里的otpParams要与store里设置的值一样。  用来发起请求时带上这些下面的 key-value值。
-                  smsCode: this.inputSmsCode,
-                  smsSerialNO: this.smsCode.smsSerialNO,
-                  mobile: this.rsaEncrypt(this.inputMobile)
-            })
-            this.$store.dispatch('otp').then((data) => {
-               this.inputSmsCode = ''
-               this.enableNext = true
-               this.countDown( 20 )
-               this.$refs.inputSmsCode.focus()
-            })
+            if (this.validateMobile() && this.validateSmsCode()) {
+              this.$store.commit('setLoginParams', {
+                paramsKey: 'loginParams',
+                mobile: this.rsaEncrypt(this.inputMobile)
+              })
+              this.$store.commit('setLoginParams', {
+                paramsKey: 'otpParams',
+                smsCode: this.inputSmsCode,
+                smsSerialNO: this.smsCode.smsSerialNO,
+                mobile: this.rsaEncrypt(this.inputMobile)
+              })
+              this.$store.dispatch('otp').then((data) => {
+                this.$router.push({ name: 'identity' })
+              })
+            }
 
         }
     }

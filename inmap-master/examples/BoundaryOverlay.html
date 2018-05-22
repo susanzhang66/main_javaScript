@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>DotOverlay</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+
+        #allmap {
+            width: 100%;
+            height: 100%;
+        }
+
+        p {
+            margin-left: 5px;
+            font-size: 14px;
+        }
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=U3q69k0Dv0GCYNiiZeHPf7BS"></script>
+    <script src="./data/shenzhen.js"></script>
+    <script src="../dist/inmap.js"></script>
+
+</head>
+
+<body>
+    <div id="allmap"></div>
+</body>
+
+</html>
+<script>
+    var inmap = new inMap.Map({
+        id: 'allmap',
+        skin: "Blueness",
+        center: ["114.16248337214269", "22.559515429553684"],
+        zoom: {
+            value: 11,
+            show: true,
+            max: 22
+        }
+    })
+    var overlay = new inMap.BoundaryOverlay({
+        style: {
+            normal: {
+                borderWidth: 1.5,
+                // borderColor: "rgba(18,65,114,1)",
+                backgroundColor: "rgba(252,196,95,0.71)",
+                label: {
+                    show: true, // 是否显示
+                    font: "13px bold ",
+                    color: "rgba(224, 238, 251,1)"
+                }
+            },
+
+        },
+        data: data,
+        event: {
+            onState(state) {
+                console.log(state);
+            }
+        }
+    });
+    inmap.add(overlay);
+</script>

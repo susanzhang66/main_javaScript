@@ -5,7 +5,7 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const app = express();
 const config = require('./express_devWebpackConfig.js');
 const compiler = webpack(config);
-
+var path = require('path')
 var { StaticServlet } = require('./StaticServlet')
 
 // Tell express to use the webpack-dev-middleware and use the webpack.config.js
@@ -26,6 +26,9 @@ app.use('/mockData/*', function(req, res) {
   sevlet.handleRequest(req, res);
 
 });
+
+
+app.use('/static', express.static('./static'))
 
 // Serve the files on port 3000.
 app.listen(3000, function () {
