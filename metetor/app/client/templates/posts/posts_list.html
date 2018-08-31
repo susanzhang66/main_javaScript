@@ -1,0 +1,8 @@
+<template name="postsList">
+  <div class="posts">
+  	<!-- 这个 posts 对象来自哪里？好问题。它实际上是一个 模板 helper，你可以想象它是动态值的占位符（placeholder）。 -->
+    {{#each posts}}
+      {{> postItem}}
+    {{/each}}
+  </div>
+</template>
