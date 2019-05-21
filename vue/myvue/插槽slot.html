@@ -75,20 +75,34 @@ th.active .arrow {
   <my-component v-if="showSlot" @close="showSlot = false">
     <p>这是一些初始内容</p>
     <p>这是更多的初始内容</p>
+    这里可以是1）文字，2）也可以是html,3）甚至也可以是其他组件
   </my-component>
-  
-</div>
-
-
-<div class="parent" id="slot2">
-  <child>
-    <template scope="props">
-      <span>hello from parent</span>
-      <span>{{ props.text }}</span>
+  <base-layout>
+    <template v-slot:header>
+      <h1>Here might be a page title</h1>
     </template>
-  </child>
-</div>
 
+    <template v-slot:default>
+      <p>A paragraph for the main content.</p>
+      <p>And another one.</p>
+    </template>
+
+    <template v-slot:footer>
+      <p>Here's some contact info</p>
+    </template>
+  </base-layout>
+  <div class="parent" id="slot2">
+    <child>
+      <template scope="props">
+        <span>hello from parent，相当于说这里是子组件传给父组件</span>
+        <span>{{ props.aa }} 这类相当于父组件的值传给这里子组件</span>
+      </template>
+    </child>
+  </div>
+
+
+</div>
+<!-- my-component -->
 <script type="text/html" id="test_slot">
 <div>
   <h2>我是子组件的标题</h2>
@@ -98,14 +112,32 @@ th.active .arrow {
   <button @click="$emit('close')">点击按钮显示隐藏slot</button>
 </div>
 </script>
+<!-- my-component -->
+
+<script type="text/html" id="slot_name">
+<div class="container">
+  这里是具名插槽例子slot有个属性name可以指定位置渲染，没有指定的就默认。
+  <header>
+    这里的slot name是具名插槽，传值进来
+    <slot name="header"></slot>
+  </header>
+  <main>
+    <slot></slot>
+  </main>
+  <footer>
+    <slot name="footer"></slot>
+  </footer>
+</div>
+</script>
 
 <script type="text/html" id="test_slot2">
 <div class="child">
-  <slot text="hello from child"></slot>
+  这里的slot的属性作为传值作用。这里的slot aa,是传值出去。
+  <slot aa="hello from child"></slot>
 </div>
 </script>
-    <script type="text/javascript" src="../js/vue.js"></script>
-    <script type="text/javascript">
+<script type="text/javascript" src="../js/Vue.v2.6.10.js"></script>
+<script type="text/javascript">
 // register the grid component   这个是单个插槽。
 Vue.component('my-component', {
   template: '#test_slot'
@@ -114,18 +146,13 @@ Vue.component('my-component', {
 Vue.component('child', {
   template: '#test_slot2',
 })
-
+//这个是具名插槽
+Vue.component('base-layout', {
+  template: '#slot_name',
+})
 // bootstrap the demo
-// var demo = new Vue({
-//   el: '#demo',
-//   data:{
-//     showSlot:true
-//   }
-// })
-
-// bootstrap the demo
-var demo2 = new Vue({
-  el: '#slot2',
+var demo = new Vue({
+  el: '#demo',
   data:{
     showSlot:true
   }

@@ -1,0 +1,12 @@
+// 设置ie6背景缓存
+(function(navigator){
+	var browser = new Object();
+	browser.name=navigator.appName;
+	if(browser.name.indexOf("Microsoft")!=-1){
+		browser.version=navigator.appVersion.indexOf("MSIE");
+		browser.version=parseInt(navigator.appVersion.substring(browser.version+4));
+		if(browser.version<=6){
+			document.execCommand("BackgroundImageCache", false, true);
+		}
+	}
+})(window.navigator);

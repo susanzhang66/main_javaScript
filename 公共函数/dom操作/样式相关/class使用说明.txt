@@ -1,0 +1,13 @@
+$addClass
+
+$addSelect
+
+$delClass
+
+$display
+
+$hasClass
+
+$setClass
+
+$setStyles

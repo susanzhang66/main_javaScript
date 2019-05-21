@@ -1,0 +1,12 @@
+{
+	"flag":"1",
+	"data":{
+		"resultMsg":"返回成功",
+		"load_info":{
+			"ln_term":"",
+			"insure_rate":""
+		},
+		"resultCode":"1"
+	},
+	"msg":"操作成功"
+}

@@ -600,6 +600,7 @@
 
     /**
      * Defer a task to execute it asynchronously.
+     * 延迟一个任务，去异步执行。
      */
     var nextTick = (function() {
         var callbacks = [];
@@ -721,6 +722,7 @@
     /**
      * A dep is an observable that can have multiple
      * directives subscribing to it.
+     *  显著的/ 可以 多样的指令订阅它。
      */
     var Dep = function Dep() {
         this.id = uid++;
@@ -838,6 +840,9 @@
      * object. Once attached, the observer converts target
      * object's property keys into getter/setters that
      * collect dependencies and dispatches updates.
+
+     * Observer 类是； 关系一个对象，一旦关系上，observer会转换 对象的属性keys值，变化成getter/setters.以致于
+     收集依赖和分发更新。
      */
     var Observer = function Observer(value) {
         this.value = value;

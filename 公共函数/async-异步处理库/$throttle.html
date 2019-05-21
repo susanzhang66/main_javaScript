@@ -1,0 +1,55 @@
+<html>
+<head></head>
+<body>
+<script>
+/*
+函数名称：$throttle
+函数描述： 
+函数节流
+函数代码：
+*/ 
+function $throttle( fn, _interval ) {		//函数节流，防止onresize事件频繁触发
+
+        var __self = fn,
+            timer,
+            firstTime = true,
+            interval = _interval || 500;
+
+        return function () {
+
+            var args = arguments,
+                __me = this;
+
+            if (firstTime) {
+                __self.apply(__me, args);
+                return firstTime = false;
+            }
+
+            if (timer) {
+                return false;
+            }
+
+            timer = setTimeout(function () {
+
+                clearTimeout(timer);
+                timer = null;
+
+                __self.apply(__me, args);
+
+            }, interval);
+
+        };
+
+    }
+
+window.onresize = $throttle(function(){alert (1)}, 1500);  //500ms内触发一次onresize
+/*
+调用示例： 
+window.onresize = $throttle(function(){alert (1)}, 500);  //500ms内触发一次onresize
+被依赖函数： 
+www_iuni_com:$iuni_Ui_basewww_iuni_com:$iuni_customAlertwww_iuni_com:$iuni_failwww_iuni_com:$iuni_succwww_iuni_com:$iuni_confirmwww_iuni_com:$iuni_uploadwww_iuni_com:$iuni_Login_layer
+
+*/
+</script>
+</body>
+</html>

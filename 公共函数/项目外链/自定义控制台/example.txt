@@ -1,0 +1,1 @@
+引入这个js文件，然后在代码里_console.log("dddd")

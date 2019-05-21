@@ -1,4 +1,5 @@
-# vue_webpack_express
+
+# vue-project
 
 > A Vue.js project
 
@@ -20,8 +21,16 @@ npm run build --report
 # run unit tests
 npm run unit
 
+# run e2e tests
+npm run e2e
 # run all tests
 npm test
 ```
 
 For a detailed explanation on how things work, check out the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+这里有相关的 关于vue 的项目；
+https://github.com/vuejs-templates
+
+

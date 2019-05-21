@@ -1,0 +1,33 @@
+<html>
+<head>
+</head>
+<body>
+<script>
+/*
+函数名称：$after
+函数描述： 
+一个函数在另一个函数之前执行
+*/ 
+function $after(fn, after) {
+        return function () {
+            var ret = fn.apply(this, arguments);
+            if (ret === false) {
+                return false;
+            }
+            after.apply(this, arguments);
+            return ret;
+        };
+    };
+//调用示例： 
+var a = function(){alert(1)};
+
+var b = function(){alert(2)};
+
+a = $after(b,a);
+
+a();
+</script>
+被依赖函数： 
+www_iuni_com:$iuni_Ui_basewww_iuni_com:$iuni_customAlertwww_iuni_com:$iuni_failwww_iuni_com:$iuni_succwww_iuni_com:$iuni_confirmwww_iuni_com:$iuni_uploadwww_iuni_com:$iuni_Login_layer
+<body>
+</html>

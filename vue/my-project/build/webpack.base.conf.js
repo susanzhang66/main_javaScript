@@ -7,7 +7,7 @@ const vueLoaderConfig = require('./vue-loader.conf')
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
-
+//这个 eslint规则
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
@@ -25,9 +25,11 @@ module.exports = {
     app: './src/main.js'
   },
   output: {
-    path: config.build.assetsRoot,
+    path: config.build.assetsRoot,   //assetsRoot: path.resolve(__dirname, '../dist'), 路径是：my-project/dist
+
     filename: '[name].js',
-    publicPath: process.env.NODE_ENV === 'production'
+    //publicPath 也会在服务器脚本用到，以确保文件资源能够在 http://localhost:3000 下正确访问，我们稍后再设置端口号。   assetsPublicPath: '/',
+    publicPath: process.env.NODE_ENV === 'production'    
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
@@ -40,7 +42,8 @@ module.exports = {
   },
   module: {
     rules: [
-      ...(config.dev.useEslint ? [createLintingRule()] : []),
+
+      ...(config.dev.useEslint ? [createLintingRule()] : []),  //这个 eslint规则
       {
         test: /\.vue$/,
         loader: 'vue-loader',

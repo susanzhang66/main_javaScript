@@ -1,0 +1,86 @@
+/*
+函数名称：$msg
+函数描述： 
+消息组件，提供addListener,removeListener,send三个方法
+
+ $msg.addListener(type,callback); 添加消息监听
+ 参数说明：type:消息类型，字符串，也可以为多个类型值的数组，表示一次监听多个消息类型。callback:监听消息回调。支持2个参数:msg(消息)，type(消息类型);
+
+ $msg.removeListener(type,callback); 移除消息监听
+ 参数说明：type:消息类型，字符串，也可以为多个类型值的数组，表示一次取消监听多个消息类型。callback:监听消息回调。
+
+ $msg.send(type,msg);发送消息
+ 参数说明：type:消息类型，字符串，也可以为多个类型值的数组，表示一次发送多个消息类型。msg:消息体
+函数代码：  */
+/**
+ * 消息组件，提供addListener,removeListener,send三个方法
+ * 
+ * $msg.addListener(type,callback); 添加消息监听
+ * 参数说明：type:消息类型，字符串，也可以为多个类型值的数组，表示一次监听多个消息类型。callback:监听消息回调。支持2个参数:msg(消息)，type(消息类型);
+ * $msg.removeListener(type,callback); 移除消息监听
+ * 参数说明：type:消息类型，字符串，也可以为多个类型值的数组，表示一次取消监听多个消息类型。callback:监听消息回调。
+ * $msg.send(type,msg);发送消息
+ * 参数说明：type:消息类型，字符串，也可以为多个类型值的数组，表示一次发送多个消息类型。msg:消息体
+ */
+$msg = (function() {
+	if ( typeof $msg == "object") {
+		return $msg;
+	}
+	
+	function run(param, call) {
+		if ( param instanceof Array) {
+			for (var i = param.length; i--; ) {
+				call(param[i]);
+			}
+			return;
+		}
+		param && call(param);
+	}
+
+
+	msg = {
+		listener:null,
+		types:{},
+		addListener : function(type, callback) {
+			var tps = this.types;
+			callback && run(type, function(t) {
+				tps[type] = $arrAddUniq(tps[t], callback);
+			});
+		},
+		removeListener : function(type, callback) {
+			var tps = this.types;
+			callback && run(type, function(t) {
+				tps[t] && $arrRemove(tps[t], callback);
+			});
+		},
+		send : function(type, msg) {
+			var tps = this.types;
+			var error = [];
+			run(type, function(t) {
+				var tq = tps[t];
+				if (tq) {
+					$each(tq.slice(), function(callback) {
+						try {
+							callback(msg,t);
+						} catch(e) {
+							error.push(e)
+						};
+					});
+				}
+			});
+			if (error && error.length > 0) {
+				//错误
+				window.setTimeout(function() {throw error;});
+			}
+		}
+	};
+	return msg;
+})();
+调用示例： 
+//监听type1消息，在收到消息后输出消息内容
+$msg.addListener('type1',function(msg,type){console.log(msg)});
+
+//发送type1消息，消息内容 this is a test msg
+$msg.send('type1','this is a test msg');
+依赖函数： 
+$each$break$arrRemove$arrAddUniq

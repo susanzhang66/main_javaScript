@@ -8,7 +8,8 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
-const portfinder = require('portfinder')
+
+const portfinder = require('portfinder')   //获取端口
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
@@ -29,7 +30,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       ],
     },
     hot: true,
-    contentBase: false, // since we use CopyWebpackPlugin.
+    contentBase: false, // since we use CopyWebpackPlugin.  //  服务访问的资源。
     compress: true,
     host: HOST || config.dev.host,
     port: PORT || config.dev.port,
@@ -61,7 +62,7 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     new CopyWebpackPlugin([
       {
         from: path.resolve(__dirname, '../static'),
-        to: config.dev.assetsSubDirectory,
+        to: config.dev.assetsSubDirectory,     // config.dev.assetsSubDirectory == static
         ignore: ['.*']
       }
     ])

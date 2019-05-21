@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>HTML</title>
+	<meta name="description" content="" />
+	<meta name="author" content="caowubo" />
+	<style>
+		.list_table tr.diff, .list_table tr.diff a {
+		    color: #FF0000;
+		}
+		.list_table tr.dline {
+		    background-color: #FCFEFC;
+		}
+	</style>
+	
+</head>
+<body>
+	<div>
+		<a id="a" url="www.baidu.com"></a>
+		<input id="b"type="text" />
+		<button id="c" type="submit"></button>
+	</div>
+	<div id="filelist"></div>
+	<script type="text/html" id="tpl_list">
+		<!--goodsList/*商品列表*/
+		<table class="list_table">
+			<tbody>
+				<tr>
+					<th>商品名称</th><th width=>货号</th><th width=>价格</th><th class="sep">数量</th><th width=>属性</th><th width=>小计</th>
+				</tr>
+				<%if(list && list.length > 0){
+					for(var i = 0,len = list.length;i < len; i++){
+						var goods = list[i];
+						%>
+						<tr>
+							<td><%=goods.a%></td><td><%=goods.b%></td><td><%=goods.c%></td><td><%=goods.f%></td><td><%=goods.d%></td><td><%=goods.e%></td>
+						</tr>
+						<%
+					}
+				}else{
+					%>
+						<tr>
+							<td colspan="6" align="center" style="text-align:center;height:60px;line-height:60px;">空</td>
+						</tr>
+					<%
+				}%>
+			</tbody>
+		</table>
+		goodsList-->
+     </script>
+
+</body>
+<script type="text/javascript">    
+    function $id(id){
+    	return typeof(id) == "string" ? document.getElementById(id) : id;
+    }
+    $getTpl = (function() {
+		function a(h, g) {
+			h = h.replace(/[\n\r]/g, "");
+			var d = h.match(/<!--(.*?)\/\*(.*?)\*\/(.*?)\1-->/gi); 
+			var c = {};
+			if (!d) {
+				return [];
+			} 
+			for (var f = 0; f< d.length; f++) {  
+				var e = d[f].match(/(.*?)\/\*(.*?)\*\/(.*)\1/i); 
+				c[e[1]] = e[3].replace(/^\s*/, "").replace(/\d*$/, "");
+			}
+			return c;
+		}
+		return function(d) {
+			var b = $id("tpl_" + d);  //tpl一种约定；
+			var c = a( b ? b.innerHTML : "", true);
+			return c;
+		};
+	})();
+
+$formatTpl = (function() {
+	return function(a, c) {
+		var b = new Function("obj", "var p=[],print=function(){p.push.apply(p,arguments);};with(obj){p.push('" + a.replace(/[\r\t\n]/g, " ").split("<%").join("\t").replace(/((^|%>)[^\t]*)'/g, "$1\r").replace(/\t=(.*?)%>/g, "',$1,'").split("\t").join("');").split("%>").join("p.push('").split("\r").join("\\'") + "');}return p.join('');");
+		return c ? b(c) : b;
+	};
+})();
+var dom = $id("filelist"); 
+    var tp = $getTpl("list"); 
+    function createXmlHttpRequest(){
+    	if(window.ActiveXObject){
+    		return new ActiveXObject("Microsoft.XMLHTTP");
+    	}else if(window.XMLHttpRequest){
+    		return new XMLHttpRequest();
+    	}
+    }
+    (function(){
+    	var url = "/ordermgr/a.txt";
+    	xmlHttpRequest = createXmlHttpRequest();
+    	xmlHttpRequest.onreadystatechange = goods;
+    	xmlHttpRequest.open("GET",url,true);
+    	xmlHttpRequest.send(null);
+    })();
+    function goods(){
+    	if(xmlHttpRequest.readyState == 4 && xmlHttpRequest.status == 200){
+    		var data = xmlHttpRequest.responseText;
+    		data = strToJson(data);  
+    		dom.innerHTML = $formatTpl(tp.goodsList,{list:data.list}) 		
+    	}
+    }
+    function strToJson(str){
+		var json = (new Function("return " + str))();
+		return json;
+	} 
+	
+</script>
+</html>

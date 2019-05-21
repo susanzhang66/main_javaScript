@@ -1,0 +1,11 @@
+$console.log(123);
+$console.error(123);
+$console.debug(123);
+$console.warn(123);
+
+log太多时可以创建命名空间：
+_console = $console.namespace('index');
+_console.log();
+
+控制台快键指令
+    'filter log'
