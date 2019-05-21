@@ -6,7 +6,7 @@
      * A dep is an observable that can have multiple
      * directives subscribing to it.
      * 统一的行为(update() )，不同的实现，update
-     */
+     */ 
     var Dep = function Dep() {
         this.id = uid++;
         this.subs = []; //watcher集合

@@ -17,11 +17,13 @@
     };
 
     /**
-     * 收集依赖和分发更新操作。加入getter,setter
+     * 收集依赖和分发更新操作。加入getter,setter.
      * Observer class that are attached to each observed
      * object. Once attached, the observer converts target
      * object's property keys into getter/setters that
      * collect dependencies and dispatches updates.
+     *  * Observer 类是； 关系一个对象，一旦关系上，observer会转换 对象的属性keys值，变化成getter/setters.以致于
+     收集依赖和分发更新。
      */
     var Observer = function Observer(value) {
         this.value = value;
