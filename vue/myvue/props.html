@@ -9,8 +9,8 @@
 
 <body>
     <div id="app"> 
-        <child message="bushi a !"></child> 一个是纯粹的传入 普通数据。
-        <child2 :message="message"></child2>  一个是传入 变量。
+        <child message="bushi a !"></child> 一个是纯粹的传入 普通数据。（静态赋值）
+        <child2 :message="message"></child2>  一个是传入 变量。（动态赋值）
         
     </div>
     <script type="text/javascript" src="../js/vue.js"></script>
@@ -32,11 +32,20 @@
           // 声明 props
 
           // 然而，任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域。为了把(v-for)迭代数据传递到组件里，我们要用 props ：
-
+          data: function(){
+              return{
+                  message
+              }
+          },
           props: ['message'],
           // 就像 data 一样，prop 可以用在模板内
           // 同样也可以在 vm 实例中像“this.message”这样使用
-          template: '<span>{{ message }}</span>'
+          template: '<div><span>{{ message }}</span> <button @click="lisnerChild">点击哦</button></div>',
+          methods: {
+            lisnerChild: function( data ){
+                this.message = "扁扁扁扁变了哦";
+            },
+          }
         })
         //第二步：_init,  child
         var app2 = new Vue({
@@ -44,8 +53,8 @@
             data: {
                 message: 'Hello Vue!'
             },
-            propsData: {
-                message: 'ceshi yixia'
+            methods:{
+                
             }
         })
     </script>
