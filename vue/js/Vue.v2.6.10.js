@@ -4421,6 +4421,7 @@
     if (isRenderWatcher) {
       vm._watcher = this;
     }
+    // 一次监听的vue实例加入进入，包含了虚拟dom,$el.
     vm._watchers.push(this);
     // options
     if (options) {
@@ -4496,7 +4497,7 @@
     if (!this.newDepIds.has(id)) {
       this.newDepIds.add(id);
       this.newDeps.push(dep);
-      if (!this.depIds.has(id)) {
+      if (!this.depIds.has(id)) { 
         dep.addSub(this);
       }
     }

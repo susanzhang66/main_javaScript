@@ -34,6 +34,7 @@
                    lazy: true
                };
      */
+    //jane: 一个将数据跟虚拟节点联系起来的函数。
     var Watcher = function Watcher(
         vm,
         expOrFn,
@@ -62,7 +63,7 @@
         this.expression = expOrFn.toString();
         // parse expression for getter
         if (typeof expOrFn === 'function') {
-
+            // expOrFn：这个是render函数，既虚拟dom以及真实dom之间的函数。
             this.getter = expOrFn;
         } else {
             this.getter = parsePath(expOrFn);
@@ -76,6 +77,7 @@
                 );
             }
         }
+        // this.lazy 这个是处理computed属性的，这个会延迟处理。否则是data的话，会立马执行render了。
         this.value = this.lazy ? undefined : this.get();
     };
 
@@ -95,7 +97,8 @@
                 handleError(e, vm, ("getter for watcher \"" + (this.expression) + "\""));
             }
         } else {
-            //@Jane  NEW Watcher 的第二个参数，expOrFn
+            //@Jane  NEW Watcher 的第二个参数，expOrFn，开始渲染了。
+            // value：返回的是_ob_实例了
             value = this.getter.call(vm, vm);
         }
         // "touch" every property so they are all tracked as
@@ -394,4 +397,20 @@
         if (vm._hasHookEvent) {
             vm.$emit('hook:' + hook);
         }
+    }
+
+
+
+
+    Dep.target = null;
+    var targetStack = [];
+  
+    function pushTarget (target) {
+      targetStack.push(target);
+      Dep.target = target;
+    }
+  
+    function popTarget () {
+      targetStack.pop();
+      Dep.target = targetStack[targetStack.length - 1];
     }

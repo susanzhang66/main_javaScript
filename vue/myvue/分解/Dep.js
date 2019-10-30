@@ -1,4 +1,4 @@
-//Watcher 的集合、                                                                                               管理器。。
+//dep相当于是，虚拟节点遇到的数据，每个数据一个dep。应该是一个watcher对应多个dep。                                                                                            管理器。。
 
     var uid = 0;
 
@@ -31,6 +31,7 @@
         // stabilize the subscriber list first
         var subs = this.subs.slice();
         for (var i = 0, l = subs.length; i < l; i++) {
+            // 这个是触发watcher的update();
             subs[i].update();
         }
     };
@@ -62,4 +63,16 @@
 
     function popTarget() {
         Dep.target = targetStack.pop();
+    }
+
+
+//这个函数是 代理函数，当虚拟节点中 有取了data里面的值时，触发，data的defineProperty
+    function proxy (target, sourceKey, key) {
+        sharedPropertyDefinition.get = function proxyGetter () {
+            return this[sourceKey][key]
+        };
+        sharedPropertyDefinition.set = function proxySetter (val) {
+            this[sourceKey][key] = val;
+        };
+        Object.defineProperty(target, key, sharedPropertyDefinition);
     }

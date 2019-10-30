@@ -48,7 +48,7 @@
             };
         } else {
             updateComponent = function() {
-                //这里会渲染动作。。。
+                //这里会渲染动作。。。_update相当于渲染，vm.__patch__
                 vm._update(vm._render(), hydrating);
             };
         }

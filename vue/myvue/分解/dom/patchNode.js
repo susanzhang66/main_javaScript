@@ -13,6 +13,8 @@
         //     style,
         //     transition
         // ];
+    // jane:patch既赋值在vue的protoype的__patch__上。
+    //返回了虚拟节点与旧节点的更新等操作。
     var patch = createPatchFunction({
         nodeOps: nodeOps,
         modules: modules
@@ -1008,7 +1010,7 @@
                 removeVnodes(parentElm, oldCh, oldStartIdx, oldEndIdx);
             }
         }
-
+        //这个应该是新老 虚拟节点
         function patchVnode(oldVnode, vnode, insertedVnodeQueue, removeOnly) {
             if (oldVnode === vnode) {
                 return
@@ -1171,6 +1173,7 @@
             var insertedVnodeQueue = [];
 
             if (isUndef(oldVnode)) {
+                //Jane:不存在老的虚拟节点则去 创建根根实例。
                 // empty mount (likely as component), create new root element
                 isInitialPatch = true;
                 createElm(vnode, insertedVnodeQueue, parentElm, refElm);

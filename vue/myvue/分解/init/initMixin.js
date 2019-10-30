@@ -1,5 +1,5 @@
    // 　new Vue的初始执行。 Vue.prototype._init。。。。
-
+// 实例化vue的 执行第一步
     function initMixin(Vue) {
         Vue.prototype._init = function(options) {
             var vm = this;

@@ -32,11 +32,7 @@
           // 声明 props
 
           // 然而，任何数据都不会被自动传递到组件里，因为组件有自己独立的作用域。为了把(v-for)迭代数据传递到组件里，我们要用 props ：
-          data: function(){
-              return{
-                  message
-              }
-          },
+         
           props: ['message'],
           // 就像 data 一样，prop 可以用在模板内
           // 同样也可以在 vm 实例中像“this.message”这样使用
